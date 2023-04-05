@@ -1,0 +1,70 @@
+﻿@model SigninMember
+<!-- Layout -->
+<head>
+    <link href="/css/bootstrap.css" rel="stylesheet" />
+</head>
+<div asp-validation-summary="All"></div>
+<div class="layout bg-light h-100">
+    <div class="container h-100">
+        <div class="row align-items-center justify-content-center g-0 h-100">
+            <div class="col-12 col-sm-10 col-md-7 col-lg-5 col-xl-4">
+                <!-- Heading -->
+                <h2 class="text-center mb-1">Sign in</h2>
+                <!-- Heading -->
+                <!-- Text -->
+                <p class="text-center mb-4">Sign in to continue to ChatBox</p>
+                <!-- Text -->
+                <!-- Card -->
+                <form method="post">
+                    <div class="card">
+                        <div class="card-body p-4">
+                            <!-- Form -->
+                            <form class="mb-4">
+                                <!-- Email -->
+                                <div class="mb-4">
+                                    <label asp-for="Usr" class="mb-2">Username</label>
+                                    <input asp-for="Usr" class="form-control form-control-solid form-control-lg" placeholder="Enter your user or email">
+                                </div>
+                                <!-- Email -->
+                                <!-- Password -->
+                                <div class="mb-4">
+                                    <label asp-for="Pwd" class="mb-2">Password</label>
+                                    <input asp-for="Pwd" type="password" class="form-control form-control-solid form-control-lg" placeholder="Enter your password">
+                                </div>
+                                <!-- Password -->
+                                <!-- Remember -->
+                                <div class="d-flex justify-content-between mb-4">
+                                    <div class="form-check">
+                                        @*<input asp-for="Rem" class="form-check-input" type="checkbox" value="" id="remember-check">
+                                        <label asp-for="Rem" class="form-check-label" for="remember-check">*@
+                                            <input asp-for="Rem" type="checkbox"/>
+                                            Remember me
+                                        </label>
+                                    </div>
+                                    <a href="reset.html" class="no-underline">Reset password</a>
+                                </div>
+                                <!-- Remember -->
+                                <!-- Button -->
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-lg btn-primary">Sign in</button>
+                                </div>
+                                <!-- Button -->
+                            </form>
+                            <!-- Form -->
+                            <!-- Text -->
+                            <p class="text-center mb-0">
+                                Don't have an account?
+                                <a href="signup.html">Sign up.</a>
+                            </p>
+                            <!-- Text -->
+                        </div>
+                    </div>
+                </form>
+                
+                <!-- Card -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Layout -->
+<script src="/js/bootstrap.bundle.js"></script>

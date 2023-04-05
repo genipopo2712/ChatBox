@@ -1,0 +1,37 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link href="/css/magnific-popup.min.css" rel="stylesheet"/>
+    <link href="/css/remixicon.css" rel="stylesheet"/>
+    <link href="/css/styles-light.min.css" rel="stylesheet"/>
+    <link href="/css/all.css" rel="stylesheet"/>
+    <link href="/css/brands.css" rel="stylesheet"/>
+    <link href="/css/fontawesome.css" rel="stylesheet"/>
+    <link href="/css/solid.css" rel="stylesheet"/>
+    <link href="/css/bootstrap.css" rel="stylesheet"/>
+    <script src="/js/app.min.js"></script>
+    <script src="/js/bootstrap.bundle.js"></script>
+    <script src="/js/jquery.magnific-popup.min.js"></script>
+    <script src="/js/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+@*    <ul>
+        @if(User.Identity.IsAuthenticated)
+        {
+            <a>Welcome @User.Identity.Name</a>
+            
+            <a href="/auth/signout">Log out</a>
+        }
+        else
+        {
+            <a href="/auth/signin">Log In</a>
+        }
+    </ul>*@
+    <div>
+        @RenderBody()
+    </div>
+</body>
+</html>
