@@ -54,7 +54,11 @@ namespace ChatBox.Controllers
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return Redirect("/");
         }
-        
+
+
+
+        //Note 01: Not use this function any more from 06/04/23 because this make heavy traffic of query to database 
+        /*
         public IActionResult Settime()
         {
             DateTime act = DateTime.Now;
@@ -65,5 +69,6 @@ namespace ChatBox.Controllers
             }
             return Json(null);
         }
+        */
     }
 }

@@ -2321,31 +2321,27 @@
     <script src="/js/signalr.min.js"></script>
     <script src="/js/jquery-3.6.0.min.js"></script>
     <script>
-        const cn = new signalR.HubConnectionBuilder().withUrl("/chathub").build();
-        //console.log(cn);
-        cn.start().then(() => {
-            console.log("Connection success");
-        }).catch((e) => {
-            console.error(e);
-        });
-        $(window).on('load', function(){
-            $.post('/auth/settime');            
-        });
-        $(this).keydown(()=>{
-            $.post('/auth/settime');
-        });
-        $(document).ready(function() {
-            setInterval(status,1000);
-        });
-        function status() {
-            var lstConvId = [];
-            foreach (var it in (IEnumerable<Conversation>)ViewData["contacts"])
-            {
-                lstConvId.push(it.ConvId);
-            }
-            console.log(lstConvId);
-            cn.invoke('Userstatus', '@User.FindFirstValue(ClaimTypes.NameIdentifier)', lstConvId);
-        };
+        //const cn = new signalR.HubConnectionBuilder().withUrl("/chathub").build();
+        ////console.log(cn);
+        //cn.start().then(() => {
+        //    console.log("Connection success");
+        //}).catch((e) => {
+        //    console.error(e);
+        //});
+        //$(window).on('load', function(){
+        //    $.post('/auth/settime');            
+        //});
+        //$(this).keydown(()=>{
+        //    $.post('/auth/settime');
+        //});
+        //$(document).ready(function() {
+        //    setInterval(statusf,1000);
+        //});
+        //function statusf() {
+        //    var lstConvId = [];
+        //    console.log(lstConvId);
+        //    cn.invoke('Userstatus', '@User.FindFirstValue(ClaimTypes.NameIdentifier)', lstConvId);
+        //};
         
     </script>
     <!--Scripts-->

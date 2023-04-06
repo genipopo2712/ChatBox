@@ -28,19 +28,30 @@ namespace ChatBox.Models
             return connection.QueryFirstOrDefault<Member>(sql, new {UserId = id});
         }
 
+        //Note 01: Not use this function any more from 06/04/23 because this make heavy traffic of query to database 
+        /*
         public int SetTimeActive(string id, DateTime time)
         {
             return connection.Execute("SetTimeActive", new { UserId = id, LastTimeActive = time }, commandType: CommandType.StoredProcedure);
         }
+        */
+
+        //Note 01: Not use this function any more from 06/04/23 because this make heavy traffic of query to database 
+        /*
         public DateTime GetTimeActive(string id)
         {
             string sql = "SELECT LastTimeActive FROM Member WHERE UserId = @UserId";
             return connection.QueryFirstOrDefault<DateTime>(sql, new { UserId = id});
         }
+        */
 
+
+        //Note 01: Not use this function any more from 06/04/23 because this make heavy traffic of query to database 
+        /*
         public UserStatus GetTimeAwayById(string id)
         {
             return connection.QueryFirstOrDefault<UserStatus>("CountTimeAway", new {UserId = id}, commandType: CommandType.StoredProcedure);
         }
+        */
     }
 }

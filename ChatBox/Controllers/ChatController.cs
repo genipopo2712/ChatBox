@@ -29,8 +29,12 @@ namespace ChatBox.Controllers
             if(name == null)
             {
                 name = conversationRepository.GetMembersInGroup(id, t).ToString();
+                //Note 01: Not use this function any more from 06/04/23 because this make heavy traffic of query to database
+                /*
                 memberRepository.SetTimeActive(name, DateTime.Now);
+                */
             }
+            ViewBag.id = id;
             ViewBag.conv = t;
             ViewBag.chatname = name;
             ViewBag.messages = messageRepository.GetMessages(t);

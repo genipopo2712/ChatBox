@@ -27,7 +27,7 @@
 
                                 <!-- Avatar -->
                                 
-                                <div class="avatar avatar-online avatar-sm me-3" id="usts">
+                                <div ss="" class="avatar avatar-online avatar-sm me-3" id="@ViewBag.id">
                                     <span class="avatar-label bg-soft-primary text-primary fs-6">AM</span>
                                 </div>
                                 
@@ -570,14 +570,27 @@
     <script type="text/javascript">
         const cn = new signalR.HubConnectionBuilder().withUrl("/chathub").build();
         //console.log(cn);
-        cn.start().then(()=>{
-            console.log("Connection success");
-        }).catch((e)=>{
-            console.error(e);
+
+        cn.start().then(function () {
+            var i = "@ViewBag.conv"
+            cn.invoke("JoinGroup", i).catch(function (err) {
+                return console.error(err.toString());
+            });
+        }).catch(function (err) {
+            return console.error(err.toString());
         });
-        cn.on('setStatus',(t,d,p)=>{
+        cn.on("SendMessage", function (user, message) {
+            console.log(user + " says " + message);
+        });
+        //cn.start().then(()=>{
+        //    console.log("Connection success");
+        //}).catch((e)=>{
+        //    console.error(e);
+        //});
+        
+        cn.on('setStatus',(t,d,p,i)=>{
             var a = `avatar avatar-${d} avatar-sm me-3`;
-            $('#usts').attr('class',a);
+            $('[ss]').attr('class',a);
             var b = `${t}`;
             var c = `"d-block text-truncate text-${p} fs-6 mb-0"`;
             document.getElementById("uststime").innerHTML = b ;
@@ -643,22 +656,27 @@
             //console.log(convid);
             cn.invoke('Send','@User.FindFirstValue(ClaimTypes.NameIdentifier)', $(frm['content']).val(), convid);
         });
-        $(window).on('load', function(){
-            $.post('/auth/settime');
+        $(window).on('load', function(){            
             var textArea = $('#mainCon');
-            textArea.scrollTop(textArea[0].scrollHeight);
+            textArea.scrollTop(textArea[0].scrollHeight);           
+            var now = new Date();
+            $('[ss]').attr('ss', now);
         });
-        $(this).keydown(()=>{
-            $.post('/auth/settime');
-        });
+        //$(this).keydown(()=>{
+        //    var now = new Date();
+        //    $('div').attr('s', now);
+        //});
         $(document).ready(function() {
-            setInterval(status,1000);
+            setInterval(statusf,1000);
         });
-        function status() {
+        function statusf() {
             var b = window.location.href;
             var convid = b.substring(b.indexOf("Chat?t=") + 7);
-            cn.invoke('Userstatus', '@User.FindFirstValue(ClaimTypes.NameIdentifier)', convid);
+            var i = '@ViewBag.id';
+            var s = $('#'+i).attr('ss');
+            cn.invoke('Userstatus', '@User.FindFirstValue(ClaimTypes.NameIdentifier)', convid,s);
         };
+        
         
     </script>
 }
