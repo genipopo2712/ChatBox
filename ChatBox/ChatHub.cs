@@ -71,12 +71,35 @@ namespace ChatBox
             //return Redirect($"/Chat/Chat?t={a}");
             Clients.Group(convid).SendAsync("recMsg",obj);
         }
+        //Note 02: Create funtion notification for user is typing
+        public async Task Usertyping(string userid, string convid, string input)
+        {
+            bool type = false;
+            if (input != null)
+            {
+                if (input.Length >= 5)
+                {
+                    type = true;
+                }
+                else
+                {
+                    type = false;
+                }
+            }
+            await Clients.OthersInGroup(convid).SendAsync("typeStatus", type);
+        }
+        //Note 03: create a structure for the object to send to the client
         public async Task Userstatus(string userid, string convid,string lastActive)
-        {            
-            string pclass = "success";
-            string time = "Available";
-            string divclass = "online";
-            
+        {
+            UserStatus obj = new UserStatus
+            {
+                uId = userid,
+                uN = conversationRepository.GetMembersInGroup(userid, convid),
+                cId = convid,
+                nt = "Available",
+                p= "success",
+                d= "online"
+            };            
             DateTimeOffset dateTimeOffset = DateTimeOffset.ParseExact(lastActive, "ddd MMM dd yyyy HH:mm:ss 'GMT'zzz '(Indochina Time)'", CultureInfo.InvariantCulture);
             DateTime lastActivetime = dateTimeOffset.LocalDateTime;
             DateTime act = DateTime.Now;
@@ -84,7 +107,18 @@ namespace ChatBox
             //UserStatus user = memberRepository.GetTimeAwayById(id);
             var gap = act - lastActivetime;
             int a = 0;
-            string b = "min";
+            string b = "min";   
+            //if (valInput != null)
+            //{
+            //    if(valInput != "Type message")
+            //    {
+            //        obj.type = true;
+            //    }
+            //    else
+            //    {
+            //        obj.type = false;
+            //    }
+            //}
             if (gap != null)
             {
                 a = (int)gap.TotalMinutes;
@@ -114,28 +148,25 @@ namespace ChatBox
                         {
                             b = "days";
                         }
-                    }
-
-                          
+                    }                          
                 }
-
             }
             if (gap.TotalMinutes > 1)
             {
 
-                divclass = "away";
-                time = $"Active {a} {b} ago";
-                pclass = "gray-600";
+                obj.d = "away";
+                obj.nt = $"Active {a} {b} ago";
+                obj.p = "gray-600";
             }
             else
             {
-                divclass = "online";
-                time = "Available";
-                pclass = "success";
+                obj.d = "online";
+                obj.nt = "Available";
+                obj.p = "success";
             }
             
 
-                    await Clients.OthersInGroup(convid).SendAsync("setStatus",time, divclass, pclass,userid);
+            await Clients.OthersInGroup(convid).SendAsync("setStatus",obj);
 
             //Clients.All.SendAsync("setStatus",status,time,color);
         }

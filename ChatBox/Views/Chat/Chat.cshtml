@@ -194,7 +194,24 @@
 
                 </div>
                 <!-- Messages -->
-
+                <div id="istyping" class="container-fluid p-2">
+                    <div class="message">
+                        <div class="message-wrap">
+                            <div class="message-item">
+                                <div class="message-content">
+                                    <div>
+                                        Writing
+                                        <div class="type-indicator">
+                                            <span></span>
+                                            <span></span>
+                                            <span></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <!-- Scroll Chat to Bottom -->
                 <div class="js-scroll-to-bottom"></div>
                 <!-- Scroll Chat to Bottom -->
@@ -208,9 +225,9 @@
                     <div class="row align-items-center g-4">
                         <!-- Input -->                        
                             <div class="col">
-                                <div class="input-group">
+                                <div class="input-group">                                    
                                     <button class="btn btn-white btn-lg border" type="button"><i class="ri-attachment-2"></i></button>
-                                    <input type="text" name="content" class="form-control form-control-lg" placeholder="Type message" aria-label="type message"/>
+                                    <input id="usertype" type="text" name="content" class="form-control form-control-lg" placeholder="Type message" aria-label="type message"/>
                                     <button class="btn btn-white btn-lg border" type="button"><i class="ri-chat-smile-2-line"></i></button>
                                 </div>
                             </div>
@@ -572,7 +589,7 @@
         //console.log(cn);
 
         cn.start().then(function () {
-            var i = "@ViewBag.conv"
+            var i = "@ViewBag.conv";
             cn.invoke("JoinGroup", i).catch(function (err) {
                 return console.error(err.toString());
             });
@@ -587,12 +604,20 @@
         //}).catch((e)=>{
         //    console.error(e);
         //});
-        
-        cn.on('setStatus',(t,d,p,i)=>{
-            var a = `avatar avatar-${d} avatar-sm me-3`;
+        cn.on('typeStatus',(t)=>{
+            if(t == true){
+                console.log("Is typing");
+                $('#istyping').show();
+            }
+            else{
+                $('#istyping').hide();
+            }            
+        });
+        cn.on('setStatus',(o)=>{
+            var a = `avatar avatar-${o.d} avatar-sm me-3`;
             $('[ss]').attr('class',a);
-            var b = `${t}`;
-            var c = `"d-block text-truncate text-${p} fs-6 mb-0"`;
+            var b = `${o.nt}`;
+            var c = `"d-block text-truncate text-${o.p} fs-6 mb-0"`;
             document.getElementById("uststime").innerHTML = b ;
             $('#uststime').attr('class',c);
         });
@@ -661,20 +686,30 @@
             textArea.scrollTop(textArea[0].scrollHeight);           
             var now = new Date();
             $('[ss]').attr('ss', now);
+            $('#istyping').hide();
         });
         //$(this).keydown(()=>{
         //    var now = new Date();
         //    $('div').attr('s', now);
         //});
         $(document).ready(function() {
-            setInterval(statusf,1000);
+            
+            setInterval(trackUser,5000);// refresh rate
+            //setInterval(trackType,5000);
         });
-        function statusf() {
+        $('#usertype').keyup(trackType);
+        function trackType(){
+            var b = window.location.href;
+            var convid = b.substring(b.indexOf("Chat?t=") + 7);
+            var i = $('#usertype').val();
+            cn.invoke('Usertyping', '@User.FindFirstValue(ClaimTypes.NameIdentifier)', convid, i);
+        };
+        function trackUser() {
             var b = window.location.href;
             var convid = b.substring(b.indexOf("Chat?t=") + 7);
             var i = '@ViewBag.id';
             var s = $('#'+i).attr('ss');
-            cn.invoke('Userstatus', '@User.FindFirstValue(ClaimTypes.NameIdentifier)', convid,s);
+            cn.invoke('Userstatus', '@User.FindFirstValue(ClaimTypes.NameIdentifier)', convid, s);
         };
         
         
