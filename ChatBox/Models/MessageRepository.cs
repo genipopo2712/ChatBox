@@ -15,6 +15,11 @@ namespace ChatBox.Models
             return connection.Execute("AddMessage", new { ConvId = obj.ConvId, UserId = obj.UserId, Content = obj.Content },commandType:CommandType.StoredProcedure);
         }
 
+        public int CountUnreadMessage(string userid, string convid)
+        {
+            return connection.QueryFirstOrDefault<int>("CountMessage", new {UserId = userid, Convid = convid},commandType:CommandType.StoredProcedure);
+        }
+
         public IEnumerable<Conversation> GetGroups(string userid)
         {
             return connection.Query<Conversation>("GetGroupName", new { UserId = userid}, commandType: CommandType.StoredProcedure);
@@ -24,6 +29,11 @@ namespace ChatBox.Models
         public IEnumerable<Message> GetMessages(string convid)
         {
             return connection.Query<Message>("GetMessages", new { ConvId = convid }, commandType: CommandType.StoredProcedure);
+        }
+
+        public int ReadMessage(string convid, string userid)
+        {
+            return connection.Execute("ReadMessage", new {ConvId = convid, UserId = userid},commandType: CommandType.StoredProcedure);
         }
     }
 }

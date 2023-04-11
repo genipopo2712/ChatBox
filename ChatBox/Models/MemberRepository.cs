@@ -27,14 +27,30 @@ namespace ChatBox.Models
             string sql = "SELECT Fullname, Avatar FROM Member WHERE UserId = @UserId";
             return connection.QueryFirstOrDefault<Member>(sql, new {UserId = id});
         }
+        public DateTime GetLastTimeActive(string id)
+        {
+            string sql = "SELECT LastTimeActive FROM Member WHERE UserId = @UserId";
+            return connection.QueryFirstOrDefault<DateTime>(sql, new {UserId = id});
+        }
 
         //Note 01: Not use this function any more from 06/04/23 because this make heavy traffic of query to database 
-        /*
+        //Note 04: Re-use this function again for set last time active of user when you user click to sign out
         public int SetTimeActive(string id, DateTime time)
         {
             return connection.Execute("SetTimeActive", new { UserId = id, LastTimeActive = time }, commandType: CommandType.StoredProcedure);
         }
-        */
+
+        public string CheckUserNameById(string name)
+        {
+            string sql = "SELECT Fullname FROM Member WHERE Username = @Username";
+            return connection.QueryFirstOrDefault<string>(sql, new { Username = name });
+        }
+
+        public int Add(Member member)
+        {
+            return connection.Execute("AddMemberIfNotExists",member, commandType: CommandType.StoredProcedure); 
+        }
+
 
         //Note 01: Not use this function any more from 06/04/23 because this make heavy traffic of query to database 
         /*

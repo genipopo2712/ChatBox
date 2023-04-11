@@ -1,0 +1,79 @@
+﻿@model Member
+<div class="layout bg-light h-100">
+    <div class="container h-100">
+        <div class="row align-items-center justify-content-center g-0 h-100">
+            <div class="col-12 col-sm-10 col-md-7 col-lg-5 col-xl-4">
+                <!-- Heading -->
+                <h2 class="text-center mb-1">Sign up</h2>
+                <!-- Heading -->
+                <!-- Text -->
+                <p class="text-center mb-4">Create new Chatflix account</p>
+                <!-- Text -->
+                <!-- Card -->
+                <div class="card">
+                    <div class="card-body p-4">
+                        <!-- Form -->
+                        <form method="post" class="mb-4">
+                            <!-- Username -->
+                            <div class="mb-4">
+                                <label class="mb-2" for="username">Username</label>
+                                <input type="text" asp-for="Fullname" class="form-control form-control-solid form-control-lg" placeholder="Enter your full name">
+                                <span asp-validation-for="Fullname" class="text-danger"></span>
+                            </div>
+                            <!-- Username -->
+                            <div class="mb-4">
+                                <label class="mb-2" for="username">Username</label>
+                                <input type="text" asp-for="Username" class="form-control form-control-solid form-control-lg" placeholder="Enter your user name">
+                                <span asp-validation-for="Username" class="text-danger"></span>
+                                <div class="text-danger m-lg-1">
+                                    @ViewBag.userMessage
+                                </div>
+                            </div>
+                            <!-- Email -->
+                            <div class="mb-4">
+                                <label for="email" class="mb-2">Email</label>
+                                <input type="email" asp-for="Email" class="form-control form-control-solid form-control-lg" placeholder="Enter your email">
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                            <!-- Email -->
+                            <!-- Password -->
+                            <div class="mb-4">
+                                <label for="password" class="mb-2">Password</label>
+                                <input type="password" asp-for="Password" class="form-control form-control-solid form-control-lg" placeholder="Enter your password">
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </div>
+                            <!-- Password -->
+                            <!-- Button -->
+                            <div class="d-grid">
+                                <button class="btn btn-lg btn-primary" >Sign up</button>
+                            </div>
+                            <!-- Button -->
+                        </form>
+                        <!-- Form -->
+                        <!-- Text -->
+                        <div class="d-grid text-center">
+                            <p>- OR -</p>
+                            <a href="#" class="btn btn-lg btn-danger">
+                                <i class="ri-google-fill"></i>
+                                Sign up using Google+
+                            </a>
+                        </div>
+                        <p class="text-center mb-1">
+                            By registering you agree to our <a href="#">Terms & Privacy.</a>
+                        </p>
+                        <!-- Text -->
+                        <!-- Text -->
+                        <p class="text-center mb-0">
+                            Already have an account?
+                            <a href="/auth/signin">Sign in.</a>
+                        </p>
+                        
+                        
+                        <!-- Text -->
+                    </div>
+                </div>
+                <!-- Card -->
+            </div>
+        </div>
+    </div>
+</div>

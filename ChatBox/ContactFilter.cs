@@ -32,7 +32,6 @@ namespace ChatBox
                         {
                             item.Convname = conversationMemberRepository.GetMembersInGroup(id, item.ConvId);
                         }
-
                     }
                     con.ViewData["contacts"]=list;
                 }                

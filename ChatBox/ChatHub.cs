@@ -170,5 +170,15 @@ namespace ChatBox
 
             //Clients.All.SendAsync("setStatus",status,time,color);
         }
+        public async Task Readmessage(string convid, string userid)
+        {
+            string i = "";
+            int ret = messageRepository.ReadMessage(convid, userid);
+            if (ret > 0)
+            {
+                i = "text-success";
+            }
+            await Clients.Group(convid).SendAsync("messIsRead", i);
+        }
     }
 }

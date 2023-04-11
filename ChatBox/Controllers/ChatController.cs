@@ -1,10 +1,12 @@
 ﻿using ChatBox.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Security.Claims;
 
 namespace ChatBox.Controllers
 {
+    [Authorize]
     public class ChatController : Controller
     {
         IMemberRepository memberRepository;
@@ -26,6 +28,9 @@ namespace ChatBox.Controllers
         {
             string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var name = conversationRepository.GetNameById(t);
+            string ids = conversationRepository.GetMembersIdInGroup(id, t);
+            DateTime lT = memberRepository.GetLastTimeActive(ids);
+            ViewBag.lastActive = (int)(DateTime.Now - lT).TotalMinutes;
             if(name == null)
             {
                 name = conversationRepository.GetMembersInGroup(id, t).ToString();
