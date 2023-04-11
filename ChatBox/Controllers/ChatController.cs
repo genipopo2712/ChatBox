@@ -79,6 +79,20 @@ namespace ChatBox.Controllers
             }
             return Redirect($"/Chat/Chat?t={a}");
         }
-
+        public IActionResult Creategroup(Group obj)
+        {
+            string us = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            string gid = Helper.Groupconv(us);
+            int ret = conversationRepository.Add(gid, obj.Convname, obj.ConvDescrip);
+            if (ret > 0)
+            {
+                var groups = obj.Members.Split(';');
+                foreach (var m in groups)
+                {
+                    conversationRepository.Insert(gid,m);
+                }
+            }
+            return Redirect($"/Chat/Chat?t={gid}");
+        }
     }
 }

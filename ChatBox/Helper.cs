@@ -23,15 +23,23 @@ namespace Chatbox
         }
         public static string StringConv(string id1, string id2)
         {
+            string r = "1B";
             int ret = string.Compare(id1, id2);
             if (ret < 0)
             {
-                return id1 + id2;
+                r=r+id1.Substring(2)+id2;
             }
             else
             {
-                return id2 + id1;
+                r=r+id2.Substring(2)+id1;
             }
+            return r;
+        }
+        public static string Groupconv(string id)
+        {
+            string i= RandomString(30).ToUpper();
+            string groupid = $"2B{i}{id}";
+            return groupid;
         }
     }
 }

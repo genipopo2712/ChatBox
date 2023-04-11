@@ -1,5 +1,5 @@
 ﻿@using System.Security.Claims;
-
+@model Group
 <!DOCTYPE html>
 
 <html>
@@ -55,13 +55,13 @@
                     </a>
                 </li>
                 <!-- Chats -->
-                <!-- Notifications -->
+                @*<!-- Notifications -->
                 <li class="nav-item mb-5" role="presentation">
                     <a class="nav-link" data-bs-toggle="pill" href="#notifications-tab" role="tab" aria-selected="false" title="Notifications">
                         <i class="ri-notification-3-line"></i>
                     </a>
                 </li>
-                <!-- Notifications -->
+                <!-- Notifications -->*@
                 <!-- Settings -->
                 <li class="nav-item mb-5" role="presentation">
                     <a class="nav-link" data-bs-toggle="pill" href="#settings-tab" role="tab" aria-selected="false" title="Settings">
@@ -93,7 +93,7 @@
     <!-- Sidebar -->
     <div class="sidebar border-end overflow-hidden h-100">
         <div class="tab-content h-100">
-            <!-- Create Chat Tab -->
+            <!-- Create Chat Tab -->           
             <div class="tab-pane fade h-100" id="create-chat-tab" role="tabpanel">
                 <div class="d-flex flex-column h-100">
                     <!-- Tab Header -->
@@ -123,12 +123,7 @@
                     <!-- Tab Header -->
 
                     <!-- Search Input -->
-                    <div class="m-4">
-                        <div class="input-group">
-                            <input type="text" class="form-control form-control-lg form-control-solid" placeholder="Search member" aria-label="Search member" aria-describedby="search-member-button">
-                            <button class="btn btn-secondary btn-lg" type="button" id="search-member-button"><i class="ri-search-line"></i></button>
-                        </div>
-                    </div>
+                    
                     <!-- Search Input -->
 
                     <!-- Segmented Control -->
@@ -148,483 +143,112 @@
                         </ul>
                     </div>
                     <!-- Segmented Control -->
-
+                    
                     <!-- Tab Content -->
                     <div class="hide-scrollbar h-100">
                         <div class="tab-content m-4 mt-0">
                             <div class="tab-pane fade show active" id="create-group-tab" role="tabpanel">
                                 <!-- Group Card -->
-                                <div class="card mb-3">
-                                    <div class="card-body pt-0">
-                                        <!-- Profile -->
-                                        <div class="profile text-center">
-                                            <div class="profile-img text-primary">
-                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 100" fill="currentColor">
-                                                    <defs>
-                                                        <style>
-                                                            .st1 {
-                                                                fill: #fff;
-                                                                opacity: 0.1;
-                                                            }
-                                                        </style>
-                                                    </defs>
-                                                    <path d="M300,0v80c0,11-9,20-20,20H20C9,100,0,91,0,80V0H300z" />
-                                                    <path class="st1" d="M50,71c-16,0-29,13-29,29h10c0-10.5,8.5-19,19-19s19,8.5,19,19h10C79,84,66,71,50,71z" />
-                                                    <path class="st1" d="M31.6,0H21.3C21.8,1.6,22,3.3,22,5c0,10.5-8.5,19-19,19c-1,0-2-0.1-3-0.2v10.1C1,34,2,34,3,34c16,0,29-13,29-29
-                                                                                                                        C32,3.3,31.8,1.6,31.6,0z" />
-                                                    <path class="st1" d="M238.5,58C217.3,58,200,75.3,200,96.5c0,1.2,0,2.3,0.2,3.5h10.1c-0.1-1.2-0.2-2.3-0.2-3.5
-                                                                                                                        c0-15.7,12.8-28.5,28.5-28.5S267,80.8,267,96.5c0,1.2-0.1,2.3-0.2,3.5h10.1c0.1-1.2,0.2-2.3,0.2-3.5C277,75.3,259.7,58,238.5,58z" />
-                                                    <path class="st1" d="M299,22c-11,0-20-9-20-20c0-0.7,0-1.3,0.1-2h-10C269,0.7,269,1.3,269,2c0,16.5,13.5,30,30,30c0.3,0,0.7,0,1,0
-                                                                                                                        V22C299.7,22,299.3,22,299,22z" />
-                                                </svg>
-                                            </div>
-                                            <div class="profile-content">
-                                                <div class="avatar avatar-lg">
-                                                    <span class="avatar-label bg-success text-white fs-3">
-                                                        <i class="ri-image-line"></i>
-                                                    </span>
+                                <form method="post" action="/chat/creategroup">
+                                    <div class="card mb-3">
+                                        <div class="card-body pt-0">
+                                            <!-- Profile -->
+                                            <div class="profile text-center">
+                                                <div class="profile-content">
+                                                    <div class="avatar avatar-lg">
+                                                        <span class="avatar-label bg-success text-white fs-3">
+                                                            <i class="ri-image-line"></i>
+                                                        </span>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <!-- Profile -->
-                                
-                                        <!-- Group Name Input -->
-                                        <div class="my-4">
-                                            <div class="input-group">
-                                                <input type="text" class="form-control form-control-lg form-control-solid" placeholder="Group name" aria-label="Group name">                                                    
+                                            <!-- Profile -->
+                                            <!-- Group Name Input -->
+                                            <div class="my-4">
+                                                <div class="input-group">
+                                                    <input type="text" asp-for="Convname" class="form-control form-control-lg form-control-solid" placeholder="Group name" aria-label="Group name">
+                                                </div>
                                             </div>
-                                        </div>
-                                        <!-- Group Name Input -->
-                                
-                                        <!-- About Input -->
-                                        <div class="mb-4">
-                                            <div class="input-group">
-                                                <textarea class="form-control form-control-lg form-control-solid" placeholder="About text" rows="3"></textarea>
+                                            <!-- Group Name Input -->
+                                            <!-- About Input -->
+                                            <div class="mb-4">
+                                                <div class="input-group">
+                                                    <textarea asp-for="ConvDescrip" class="form-control form-control-lg form-control-solid" placeholder="Group description" rows="3"></textarea>
+                                                </div>
                                             </div>
+                                            <div class="my-4" hidden>
+                                                <div class="input-group">
+                                                    <input id="mlst" type="text" asp-for="Members" class="form-control form-control-lg form-control-solid" placeholder="Group name" aria-label="Group name">
+                                                </div>
+                                            </div>                                           
+                                            <!-- About Input -->
+                                            <div class="create-chat-footer border-top p-4">
+                                                <button class="btn btn-lg btn-primary w-100">Create Chat</button>
+                                            </div>
+                                            
                                         </div>
-                                        <!-- About Input -->
                                     </div>
-                                </div>
+                                </form>
+                                
                                 <!-- Group Card -->
-
                                 <!-- Title -->
                                 <div class="d-flex align-items-center mx-4 mb-3">
                                     <small class="text-muted me-auto">Options</small>
                                 </div>
-                                <!-- Title -->
-
-                                <!-- Options -->
-                                <div class="card mb-3">
-                                    <div class="card-body">
-                                        <div class="row align-items-center gx-4">
-                                            <!-- Icon -->
-                                            <div class="col-auto">
-                                                <div class="avatar">
-                                                    <span class="avatar-label text-muted fs-1">
-                                                        <i class="ri-chat-private-line"></i>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <!-- Icon -->
-                                    
-                                            <!-- Content -->
-                                            <div class="col">
-                                                <h5 class="mb-1">Make chat private</h5>
-                                                <p class="text-muted mb-0">Visible only for members</p>
-                                            </div>
-                                            <!-- Content -->
-                                    
-                                            <!-- Button -->
-                                            <div class="col-auto">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" value="" id="private-check" checked>
-                                                </div>
-                                            </div>
-                                            <!-- Button -->
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Options -->
+                                <!-- Title -->                                    
                             </div>
                             <div class="tab-pane fade" id="select-member-tab" role="tabpanel">
+                                <!-- Contact List A -->                             
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    foreach (var us in (IEnumerable<Member>)ViewData["users"])
+                                    {
+                                        <div>
+                                            <!--  Friends List -->
+                                            <ul class="list-unstyled">
+                                                <!-- Chat Link -->
+                                                <li class="card contact-item">
+                                                    <div class="card-body">
+                                                        <div class="d-flex align-items-center">
+                                                            <!-- Avatar -->
+                                                            <div class="avatar avatar-online me-4">
+                                                                <img class="avatar-img" src="/img/@us.Avatar" alt="Image description">
+                                                            </div>
+                                                            <!-- Avatar -->
+                                                            <!-- Content -->
+                                                            <div class="flex-grow-1 overflow-hidden">
+                                                                <div class="d-flex align-items-center mb-1">
+                                                                    <h5 class="text-truncate mb-0 me-auto">
+                                                                        @us.Fullname
+                                                                    </h5>
+                                                                </div>
+                                                                <div class="d-flex align-items-center">
+                                                                    <div class="text-truncate me-auto">Online</div>
+                                                                </div>
+                                                            </div>
+                                                            <!-- Content -->
+                                                            <!-- Check -->
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox" value="@us.UserId" name="chk" id="check-member-1">
+                                                            </div>
+                                                            <!-- Check -->
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <!-- Chat Link -->
+                                            </ul>
+                                            <!--  Friends List -->
+                                        </div>                                        
+                                    }
+                                }
                                 <!-- Contact List A -->
-                                <div>
-                                    <!-- Letter -->
-                                    <h5 class="p-2 text-primary">
-                                        A
-                                    </h5>
-                                    <!-- Letter -->
-                                    
-                                    <!--  Friends List -->
-                                    <ul class="list-unstyled">
-                                        <!-- Chat Link -->
-                                        <li class="card contact-item">
-                                            <div class="card-body">
-                                                <div class="d-flex align-items-center">
-                                                    <!-- Avatar -->
-                                                    <div class="avatar avatar-online me-4">
-                                                        <span class="avatar-label bg-soft-primary text-primary">AM</span>
-                                                    </div>
-                                                    <!-- Avatar -->
-                                    
-                                                    <!-- Content -->
-                                                    <div class="flex-grow-1 overflow-hidden">
-                                                        <div class="d-flex align-items-center mb-1">
-                                                            <h5 class="text-truncate mb-0 me-auto">Ariel Martinez
-                                                            </h5>
-                                                        </div>
-                                                        <div class="d-flex align-items-center">
-                                                            <div class="text-truncate me-auto">Online</div>
-                                                        </div>
-                                                    </div>
-                                                    <!-- Content -->
-                                    
-                                                    <!-- Check -->
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value="" id="check-member-1">
-                                                    </div>
-                                                    <!-- Check -->
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <!-- Chat Link -->
-                                    </ul>
-                                    <!--  Friends List -->
-                                </div>
-                                <!-- Contact List A -->
-                                    
-                                <!-- Contact List C -->
-                                <div>
-                                    <!-- Letter -->
-                                    <h5 class="p-2 text-primary">
-                                        C
-                                    </h5>
-                                    <!-- Letter -->
-                                    
-                                    <!--  Friends List -->
-                                    <ul class="list-unstyled">
-                                        <!-- Chat Link -->
-                                        <li class="card contact-item">
-                                            <div class="card-body">
-                                                <div class="d-flex align-items-center">
-                                                    <!-- Avatar -->
-                                                    <div class="avatar avatar-away me-4">
-                                                        <span class="avatar-label">CS</span>
-                                                    </div>
-                                                    <!-- Avatar -->
-                                    
-                                                    <!-- Content -->
-                                                    <div class="flex-grow-1 overflow-hidden">
-                                                        <div class="d-flex align-items-center mb-1">
-                                                            <h5 class="text-truncate mb-0 me-auto">Chris Solomon</h5>
-                                                        </div>
-                                                        <div class="d-flex align-items-center">
-                                                            <div class="text-truncate me-auto">Last seen recently</div>
-                                                        </div>
-                                                    </div>
-                                                    <!-- Content -->
-                                    
-                                                    <!-- Check -->
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value="" id="check-member-2">
-                                                    </div>
-                                                    <!-- Check -->
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <!-- Chat Link -->
-                                    </ul>
-                                    <!--  Friends List -->
-                                </div>
-                                <!-- Contact List C -->
-                                    
-                                <!-- Contact List D -->
-                                <div>
-                                    <!-- Letter -->
-                                    <h5 class="p-2 text-primary">
-                                        D
-                                    </h5>
-                                    <!-- Letter -->
-                                    
-                                    <!--  Friends List -->
-                                    <ul class="list-unstyled">
-                                        <!-- Chat Link 1 -->
-                                        <li class="card contact-item mb-3">
-                                            <div class="card-body">
-                                                <div class="d-flex align-items-center">
-                                                    <!-- Avatar -->
-                                                    <div class="avatar avatar-online me-4">
-                                                        <span class="avatar-label bg-info text-white">DR</span>
-                                                    </div>
-                                                    <!-- Avatar -->
-                                    
-                                                    <!-- Content -->
-                                                    <div class="flex-grow-1 overflow-hidden">
-                                                        <div class="d-flex align-items-center mb-1">
-                                                            <h5 class="text-truncate mb-0 me-auto">Deborah Redd
-                                                            </h5>
-                                                        </div>
-                                                        <div class="d-flex align-items-center">
-                                                            <div class="text-truncate me-auto">Online</div>
-                                                        </div>
-                                                    </div>
-                                                    <!-- Content -->
-                                    
-                                                    <!-- Check -->
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value="" id="check-member-3">
-                                                    </div>
-                                                    <!-- Check -->
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <!-- Chat Link 1 -->
-                                    
-                                        <!-- Chat Link 2 -->
-                                        <li class="card contact-item">
-                                            <div class="card-body">
-                                                <div class="d-flex align-items-center">
-                                                    <!-- Avatar -->
-                                                    <div class="avatar me-4">
-                                                        <span class="avatar-label bg-success text-white">DG</span>
-                                                    </div>
-                                                    <!-- Avatar -->
-                                    
-                                                    <!-- Content -->
-                                                    <div class="flex-grow-1 overflow-hidden">
-                                                        <div class="d-flex align-items-center mb-1">
-                                                            <h5 class="text-truncate mb-0 me-auto">Donald Graves
-                                                            </h5>
-                                                        </div>
-                                                        <div class="d-flex align-items-center">
-                                                            <div class="text-truncate me-auto">Last seen 4 days ago</div>
-                                                        </div>
-                                                    </div>
-                                                    <!-- Content -->
-                                    
-                                                    <!-- Check -->
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value="" id="check-member-4">
-                                                    </div>
-                                                    <!-- Check -->
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <!-- Chat Link 2 -->
-                                    </ul>
-                                    <!--  Friends List -->
-                                </div>
-                                <!-- Contact List D -->
-                                    
-                                <!-- Contact List J -->
-                                <div>
-                                    <!-- Letter -->
-                                    <h5 class="p-2 text-primary">
-                                        J
-                                    </h5>
-                                    <!-- Letter -->
-                                    
-                                    <!--  Friends List -->
-                                    <ul class="list-unstyled">
-                                        <!-- Chat Link 1 -->
-                                        <li class="card contact-item mb-3">
-                                            <div class="card-body">
-                                                <div class="d-flex align-items-center">
-                                                    <!-- Avatar -->
-                                                    <div class="avatar avatar-busy me-4">
-                                                        <span class="avatar-label bg-soft-info text-info">JP</span>
-                                                    </div>
-                                                    <!-- Avatar -->
-                                    
-                                                    <!-- Content -->
-                                                    <div class="flex-grow-1 overflow-hidden">
-                                                        <div class="d-flex align-items-center mb-1">
-                                                            <h5 class="text-truncate mb-0 me-auto">Jerry Prater
-                                                            </h5>
-                                                        </div>
-                                                        <div class="d-flex align-items-center">
-                                                            <div class="text-truncate me-auto">Last seen recently</div>
-                                                        </div>
-                                                    </div>
-                                                    <!-- Content -->
-                                    
-                                                    <!-- Check -->
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value="" id="check-member-5">
-                                                    </div>
-                                                    <!-- Check -->
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <!-- Chat Link 1 -->
-                                    
-                                        <!-- Chat Link 2 -->
-                                        <li class="card contact-item">
-                                            <div class="card-body">
-                                                <div class="d-flex align-items-center">
-                                                    <!-- Avatar -->
-                                                    <div class="avatar avatar-online me-4">
-                                                        <span class="avatar-label bg-danger text-white">JS</span>
-                                                    </div>
-                                                    <!-- Avatar -->
-                                    
-                                                    <!-- Content -->
-                                                    <div class="flex-grow-1 overflow-hidden">
-                                                        <div class="d-flex align-items-center mb-1">
-                                                            <h5 class="text-truncate mb-0 me-auto">Joe Stoner</h5>
-                                                        </div>
-                                                        <div class="d-flex align-items-center">
-                                                            <div class="text-truncate me-auto">Online</div>
-                                                        </div>
-                                                    </div>
-                                                    <!-- Content -->
-                                    
-                                                    <!-- Check -->
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value="" id="check-member-6">
-                                                    </div>
-                                                    <!-- Check -->
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <!-- Chat Link 2 -->
-                                    </ul>
-                                    <!--  Friends List -->
-                                </div>
-                                <!-- Contact List J -->
-                                    
-                                <!-- Contact List K -->
-                                <div>
-                                    <!-- Letter -->
-                                    <h5 class="p-2 text-primary">
-                                        K
-                                    </h5>
-                                    <!-- Letter -->
-                                    
-                                    <!--  Friends List -->
-                                    <ul class="list-unstyled">
-                                        <!-- Chat Link 1 -->
-                                        <li class="card contact-item mb-3">
-                                            <div class="card-body">
-                                                <div class="d-flex align-items-center">
-                                                    <!-- Avatar -->
-                                                    <div class="avatar avatar-online me-4">
-                                                        <span class="avatar-label bg-soft-success text-success">KC</span>
-                                                    </div>
-                                                    <!-- Avatar -->
-                                    
-                                                    <!-- Content -->
-                                                    <div class="flex-grow-1 overflow-hidden">
-                                                        <div class="d-flex align-items-center mb-1">
-                                                            <h5 class="text-truncate mb-0 me-auto">Katherine Cassidy
-                                                            </h5>
-                                                        </div>
-                                                        <div class="d-flex align-items-center">
-                                                            <div class="text-truncate me-auto">Online</div>
-                                                        </div>
-                                                    </div>
-                                                    <!-- Content -->
-                                    
-                                                    <!-- Check -->
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value="" id="check-member-7">
-                                                    </div>
-                                                    <!-- Check -->
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <!-- Chat Link 1 -->
-                                    
-                                        <!-- Chat Link 2 -->
-                                        <li class="card contact-item">
-                                            <div class="card-body">
-                                                <div class="d-flex align-items-center">
-                                                    <!-- Avatar -->
-                                                    <div class="avatar me-4">
-                                                        <span class="avatar-label bg-warning text-white">KS</span>
-                                                    </div>
-                                                    <!-- Avatar -->
-                                    
-                                                    <!-- Content -->
-                                                    <div class="flex-grow-1 overflow-hidden">
-                                                        <div class="d-flex align-items-center mb-1">
-                                                            <h5 class="text-truncate mb-0 me-auto">Kelly Smith</h5>
-                                                        </div>
-                                                        <div class="d-flex align-items-center">
-                                                            <div class="text-truncate me-auto">Last seen long time ago</div>
-                                                        </div>
-                                                    </div>
-                                                    <!-- Content -->
-                                    
-                                                    <!-- Check -->
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value="" id="check-member-8">
-                                                    </div>
-                                                    <!-- Check -->
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <!-- Chat Link 2 -->
-                                    </ul>
-                                    <!--  Friends List -->
-                                </div>
-                                <!-- Contact List K -->
-                                    
-                                <!-- Contact List M -->
-                                <div>
-                                    <!-- Letter -->
-                                    <h5 class="p-2 text-primary">
-                                        M
-                                    </h5>
-                                    <!-- Letter -->
-                                    
-                                    <!--  Friends List -->
-                                    <ul class="list-unstyled mb-1">
-                                        <!-- Chat Link -->
-                                        <li class="card contact-item">
-                                            <div class="card-body">
-                                                <div class="d-flex align-items-center">
-                                                    <!-- Avatar -->
-                                                    <div class="avatar me-4">
-                                                        <span class="avatar-label bg-primary text-white">MC</span>
-                                                    </div>
-                                                    <!-- Avatar -->
-                                    
-                                                    <!-- Content -->
-                                                    <div class="flex-grow-1 overflow-hidden">
-                                                        <div class="d-flex align-items-center mb-1">
-                                                            <h5 class="text-truncate mb-0 me-auto">Maurice Coleman
-                                                            </h5>
-                                                        </div>
-                                                        <div class="d-flex align-items-center">
-                                                            <div class="text-truncate me-auto">Last seen 2 mounth ago</div>
-                                                        </div>
-                                                    </div>
-                                                    <!-- Content -->
-                                    
-                                                    <!-- Check -->
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value="" id="check-member-9">
-                                                    </div>
-                                                    <!-- Check -->
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <!-- Chat Link -->
-                                    </ul>
-                                    <!--  Friends List -->
-                                </div>
-                                <!-- Contact List M -->
-                            </div>                                
+                            </div>
                         </div>
                     </div>
                     <!-- Tab Content -->
-
                     <!-- Create Chat Footer -->
-                    <div class="create-chat-footer border-top p-4">
-                        <button class="btn btn-lg btn-primary w-100">Create Chat</button>
-                    </div>
-                    <!-- Create Chat Footer -->
+                    
+                    <!-- Create Chat Footer -->                    
                 </div>
             </div>
             <!-- Create Chat Tab -->
@@ -913,295 +537,9 @@
                 </div>
             </div>
             <!-- Chats Tab -->
-
+            
             <!-- Notification Tab -->
-            <div class="tab-pane fade h-100" id="notifications-tab" role="tabpanel">
-                <div class="d-flex flex-column h-100">
-                    <!-- Tab Header -->
-                    <div class="tab-header d-flex align-items-center border-bottom">
-                        <ul class="d-flex justify-content-between align-items-center list-unstyled w-100 mx-4 mb-0">
-                            <!-- Title -->
-                            <li>
-                                <h3 class="mb-0">Notifications</h3>
-                            </li>
-                            <!-- Title -->
-
-                            <!-- Buttons -->
-                            <li>
-                                <ul class="list-inline">
-                                    <!-- Menu Button -->
-                                    <li class="list-inline-item">
-                                        <button type="button" class="navigation-toggle btn btn-secondary btn-icon d-xl-none">
-                                            <i class="ri-menu-line"></i>
-                                        </button>
-                                    </li>
-                                    <!-- Menu Button -->
-                                </ul>
-                            </li>
-                            <!-- Buttons -->
-                        </ul>
-                    </div>
-                    <!-- Tab Header -->
-
-                    <!-- Search Input -->
-                    <div class="m-4">
-                        <div class="input-group">
-                            <input type="text" class="form-control form-control-lg form-control-solid" placeholder="Search notification" aria-label="Search notifications" aria-describedby="search-notification-button">
-                            <button class="btn btn-secondary btn-lg" type="button" id="search-notification-button">
-                                <i class="ri-search-line"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <!-- Search Input -->
-
-                    <!-- Tab Content -->
-                    <div class="hide-scrollbar h-100">
-                        <div class="m-4 mt-0">
-                            <!-- Today -->
-                            <div class="notification-list">
-                                <!-- Title -->
-                                <div class="d-flex align-items-center mx-4 mb-3">
-                                    <small class="text-muted me-auto">Today</small>
-                                    <a href="#" class="text-muted small">Clear all</a>
-                                </div>
-                                <!-- Title -->
-
-                                <!-- Card -->
-                                <div class="card mb-3">
-                                    <div class="card-body">
-                                        <div class="d-flex align-items-center">
-                                            <!-- Avatar -->
-                                            <div class="avatar me-4">
-                                                <span class="avatar-label bg-soft-success text-success">KC</span>
-                                            </div>
-
-                                            <div class="flex-grow-1">
-                                                <div class="d-flex align-items-center overflow-hidden">
-                                                    <h5 class="me-auto text-break mb-0">Katherine Cassidy</h5>
-                                                    <span class="small text-muted text-nowrap ms-2">04:45 PM</span>
-                                                </div>
-
-                                                <div class="d-flex align-items-center">
-                                                    <div class="line-clamp me-auto">Sent you a friend invitation.</div>
-
-                                                    <div class="dropdown ms-5">
-                                                        <button class="btn btn-icon btn-base btn-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                            <i class="ri-more-fill"></i>
-                                                        </button>
-                                                        <ul class="dropdown-menu">
-                                                            <li><a class="dropdown-item" href="#">See less often</a></li>
-                                                            <li><a class="dropdown-item" href="#">Hide</a></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="card-footer">
-                                        <div class="row gx-4">
-                                            <div class="col">
-                                                <a href="#" class="btn btn-secondary btn-sm w-100">Decline</a>
-                                            </div>
-                                            <div class="col">
-                                                <a href="#" class="btn btn-primary btn-sm w-100">Accept</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Card -->
-                            </div>
-                            <!-- Today -->
-
-                            <!-- Yesterday -->
-                            <div class="notification-list">
-                                <!-- Title -->
-                                <div class="d-flex align-items-center mx-4 mb-3">
-                                    <small class="text-muted me-auto">Yesterday</small>
-                                    <a href="#" class="text-muted small">Clear all</a>
-                                </div>
-                                <!-- Title -->
-
-                                <!-- Card -->
-                                <div class="card mb-3">
-                                    <div class="card-body">
-                                        <div class="d-flex align-items-center">
-                                            <!-- Avatar -->
-                                            <div class="avatar me-4">
-                                                <span class="avatar-label bg-info text-white">DR</span>
-                                            </div>
-                                            <!-- Content -->
-                                            <div class="flex-grow-1">
-                                                <div class="d-flex align-items-center overflow-hidden mb-1">
-                                                    <h5 class="mb-0 text-break me-auto">Deborah Redd</h5>
-                                                    <p class="small text-muted text-nowrap ms-2 mb-0">6:25 PM</p>
-                                                </div>
-                                                <div class="d-flex align-items-center">
-                                                    <div class="line-clamp me-auto">Uploaded new photos.
-                                                    </div>
-                                                    <div class="dropdown ms-5">
-                                                        <button class="btn btn-icon btn-base btn-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                            <i class="ri-more-fill"></i>
-                                                        </button>
-                                                        <ul class="dropdown-menu">
-                                                            <li><a class="dropdown-item" href="#">See less often</a></li>
-                                                            <li><a class="dropdown-item" href="#">Hide</a></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- Content -->
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Card -->
-
-                                <!-- Card -->
-                                <div class="card mb-3">
-                                    <div class="card-body">
-                                        <div class="d-flex align-items-center">
-                                            <!-- Avatar -->
-                                            <div class="avatar me-4">
-                                                <span class="avatar-label bg-danger text-white">JS</span>
-                                            </div>
-                                            <!-- Content -->
-                                            <div class="flex-grow-1">
-                                                <div class="d-flex align-items-center overflow-hidden mb-1">
-                                                    <h5 class="mb-0 text-break me-auto">Joe Stoner</h5>
-                                                    <p class="small text-muted text-nowrap ms-2 mb-0">5:15 PM</p>
-                                                </div>
-                                                <div class="d-flex align-items-center">
-                                                    <div class="line-clamp me-auto">Updated profile picture.
-                                                    </div>
-                                                    <div class="dropdown ms-5">
-                                                        <button class="btn btn-icon btn-base btn-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                            <i class="ri-more-fill"></i>
-                                                        </button>
-                                                        <ul class="dropdown-menu">
-                                                            <li><a class="dropdown-item" href="#">See less often</a></li>
-                                                            <li><a class="dropdown-item" href="#">Hide</a></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- Content -->
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Card -->
-
-                                <!-- Card -->
-                                <div class="card mb-3">
-                                    <div class="card-body">
-                                        <div class="d-flex align-items-center">
-                                            <!-- Avatar -->
-                                            <div class="avatar me-4">
-                                                <span class="avatar-label bg-success text-white">DG</span>
-                                            </div>
-                                            <!-- Content -->
-                                            <div class="flex-grow-1">
-                                                <div class="d-flex align-items-center overflow-hidden mb-1">
-                                                    <h5 class="mb-0 text-break me-auto">Donald Graves</h5>
-                                                    <p class="small text-muted text-nowrap ms-2 mb-0">4:35 PM</p>
-                                                </div>
-                                                <div class="d-flex align-items-center">
-                                                    <div class="line-clamp me-auto">Sent you a private message.
-                                                    </div>
-                                                    <div class="dropdown ms-5">
-                                                        <button class="btn btn-icon btn-base btn-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                            <i class="ri-more-fill"></i>
-                                                        </button>
-                                                        <ul class="dropdown-menu">
-                                                            <li><a class="dropdown-item" href="#">See less often</a></li>
-                                                            <li><a class="dropdown-item" href="#">Hide</a></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- Content -->
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Card -->
-
-                                <!-- Card -->
-                                <div class="card mb-3">
-                                    <div class="card-body">
-                                        <div class="d-flex align-items-center">
-                                            <!-- Avatar -->
-                                            <div class="avatar me-4">
-                                                <span class="avatar-label bg-warning text-white fs-3">
-                                                    <i class="ri-star-line"></i>
-                                                </span>
-                                            </div>
-                                            <!-- Content -->
-                                            <div class="flex-grow-1">
-                                                <div class="d-flex align-items-center overflow-hidden mb-1">
-                                                    <h5 class="mb-0 text-break me-auto">Gift</h5>
-                                                    <p class="small text-muted text-nowrap ms-2 mb-0">2:35 PM</p>
-                                                </div>
-                                                <div class="d-flex align-items-center">
-                                                    <div class="line-clamp me-auto">You got 5GB of free storage space.
-                                                    </div>
-                                                    <div class="dropdown ms-5">
-                                                        <button class="btn btn-icon btn-base btn-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                            <i class="ri-more-fill"></i>
-                                                        </button>
-                                                        <ul class="dropdown-menu">
-                                                            <li><a class="dropdown-item" href="#">See less often</a></li>
-                                                            <li><a class="dropdown-item" href="#">Hide</a></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- Content -->
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Card -->
-
-                                <!-- Card -->
-                                <div class="card mb-3">
-                                    <div class="card-body">
-                                        <div class="d-flex align-items-center">
-                                            <!-- Avatar -->
-                                            <div class="avatar me-4">
-                                                <span class="avatar-label fs-3">
-                                                    <i class="ri-settings-4-line"></i>
-                                                </span>
-                                            </div>
-                                            <!-- Content -->
-                                            <div class="flex-grow-1">
-                                                <div class="d-flex align-items-center overflow-hidden mb-1">
-                                                    <h5 class="mb-0 text-break me-auto">System</h5>
-                                                    <p class="small text-muted text-nowrap ms-2 mb-0">2:10 PM</p>
-                                                </div>
-                                                <div class="d-flex align-items-center">
-                                                    <div class="line-clamp me-auto">Please setup notification settings.
-                                                    </div>
-                                                    <div class="dropdown ms-5">
-                                                        <button class="btn btn-icon btn-base btn-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                            <i class="ri-more-fill"></i>
-                                                        </button>
-                                                        <ul class="dropdown-menu">
-                                                            <li><a class="dropdown-item" href="#">See less often</a></li>
-                                                            <li><a class="dropdown-item" href="#">Hide</a></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- Content -->
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Card -->
-                            </div>
-                            <!-- Yesterday -->
-                        </div>
-                    </div>
-                    <!-- Tab Content -->
-                </div>
-            </div>
+            
             <!-- Notification Tab -->
 
             <!-- Settings Tab -->
@@ -1856,5 +1194,16 @@
 <script type="text/javascript">
     $('#rlst').click(function(){
         console.log("asdasd");
+    });
+    $('input[name="chk"]').change(function (){
+        var rId = $(this).val();
+        var lst=$('input[id="mlst"]').val();
+        lst = lst + ';' + rId;
+        $('input[id="mlst"]').val(lst);
+        var a = $('input[id="mlst"]').val();
+        console.log(a);
+    });
+    $(window).on('load', function () {        
+        $('input[id="mlst"]').val('@User.FindFirstValue(ClaimTypes.NameIdentifier)');
     });
 </script>
