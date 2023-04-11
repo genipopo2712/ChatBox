@@ -28,13 +28,16 @@ namespace ChatBox
                     IEnumerable<Conversation> list = messageRepository.GetGroups(id);
                     foreach (var item in list)
                     {
-                        if (item.Convname == null)
+                        if (string.IsNullOrEmpty(item.Convname))
                         {
                             item.Convname = conversationMemberRepository.GetMembersInGroup(id, item.ConvId);
                         }
                     }
                     con.ViewData["contacts"]=list;
-                }                
+                    IEnumerable<Member> users = memberRepository.GetMembersById(id);
+                    con.ViewData["users"] = users;
+                }
+                
             }
         }
 

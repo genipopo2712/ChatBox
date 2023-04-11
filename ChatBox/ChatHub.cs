@@ -180,5 +180,10 @@ namespace ChatBox
             }
             await Clients.Group(convid).SendAsync("messIsRead", i);
         }
+        //public async Task Creategroup(string id, string userid)
+        //{
+
+        //    int ret = conversationRepository.Add(id);
+        //}
     }
 }

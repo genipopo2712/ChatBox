@@ -20,7 +20,18 @@ namespace Chatbox
                 arr[i] = pattern[random.Next(pattern.Length)];
             }
             return string.Join("", arr);
-
+        }
+        public static string StringConv(string id1, string id2)
+        {
+            int ret = string.Compare(id1, id2);
+            if (ret < 0)
+            {
+                return id1 + id2;
+            }
+            else
+            {
+                return id2 + id1;
+            }
         }
     }
 }

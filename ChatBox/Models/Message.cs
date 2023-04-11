@@ -9,5 +9,6 @@
         public DateTime MessageDate { get; set; }
         public string Avatar { get; set; }
         public string Fullname { get; set; }
+        public bool IsRead { get; set; }
     }
 }

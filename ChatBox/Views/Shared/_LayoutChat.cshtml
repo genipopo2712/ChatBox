@@ -670,519 +670,44 @@
                     <!-- Tab Content -->
                     <div class="hide-scrollbar h-100">
                         <div class="m-4">
-                            <!-- Contact List A -->
-                            <div>
-                                <!-- Letter -->
-                                <h5 class="p-2 text-primary">
-                                    A
-                                </h5>
-                                <!-- Letter -->
-
-                                <!--  Friends List -->
+                            @if(User.Identity.IsAuthenticated)
+                            {                                   
                                 <ul class="list-unstyled">
-                                    <!-- Chat Link -->
-                                    <li class="card contact-item">
-                                        <div class="card-body">
-                                            <div class="d-flex align-items-center">
-                                                <!-- Avatar -->
-                                                <div class="avatar avatar-online me-4">
-                                                    <span class="avatar-label bg-soft-primary text-primary">AM</span>
-                                                </div>
-                                                <!-- Avatar -->
-
-                                                <!-- Content -->
-                                                <div class="flex-grow-1 overflow-hidden">
-                                                    <div class="d-flex align-items-center mb-1">
-                                                        <h5 class="text-truncate mb-0 me-auto">Ariel Martinez
-                                                        </h5>
+                                    @foreach (var us in (IEnumerable<Member>)ViewData["users"])
+                                    {
+                                        <!-- Chat Link -->
+                                            <li id="rlst" class="card contact-item">
+                                                <a  class="contact-link"  asp-controller="chat" asp-action="create" asp-route-i="@us.UserId"></a>
+                                            <div class="card-body">                                                
+                                                <div class="d-flex align-items-center">
+                                                    <!-- Avatar -->
+                                                    <div class="avatar avatar-online me-4">
+                                                        <img class="avatar-img" src="/img/@us.Avatar" alt="Image description">
                                                     </div>
-                                                    <div class="d-flex align-items-center">
-                                                        <div class="text-truncate me-auto">Online</div>
+                                                    <!-- Avatar -->
+                                                    <!-- Content -->
+                                                    <div class="flex-grow-1 overflow-hidden">
+                                                        <div class="d-flex align-items-center mb-1">
+                                                            <h5 class="text-truncate mb-0 me-auto">
+                                                                @us.Fullname
+                                                            </h5>
+                                                        </div>
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="text-truncate me-auto">Online</div>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <!-- Content -->
-
-                                                <!-- Dropdown -->
-                                                <div class="dropdown">
-                                                    <button class="btn btn-icon btn-base btn-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                        <i class="ri-more-fill"></i>
-                                                    </button>
-                                                    <ul class="dropdown-menu dropdown-menu-right">
-                                                        <li>
-                                                            <a class="dropdown-item d-flex align-items-center justify-content-between" href="#">Start chat<i class="ri-message-2-line"></i></a>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item d-flex align-items-center justify-content-between" href="#">Edit contact<i class="ri-edit-line"></i></a>
-                                                        </li>
-                                                        <li>
-                                                            <div class="dropdown-divider"></div>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item d-flex align-items-center justify-content-between" href="#">Block user<i class="ri-forbid-line"></i></a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <!-- Dropdown -->
+                                                    <!-- Content -->
+                                                    <!-- Dropdown -->
+                                                    <!-- Dropdown -->
+                                                </div>                                            
                                             </div>
-                                        </div>
-                                    </li>
+                                        </li>
+                                    }
                                     <!-- Chat Link -->
                                 </ul>
-                                <!--  Friends List -->
+                                    
+                                }
                             </div>
-                            <!-- Contact List A -->
-
-                            <!-- Contact List C -->
-                            <div>
-                                <!-- Letter -->
-                                <h5 class="p-2 text-primary">
-                                    C
-                                </h5>
-                                <!-- Letter -->
-
-                                <!--  Friends List -->
-                                <ul class="list-unstyled">
-                                    <!-- Chat Link -->
-                                    <li class="card contact-item">
-                                        <div class="card-body">
-                                            <div class="d-flex align-items-center">
-                                                <!-- Avatar -->
-                                                <div class="avatar avatar-away me-4">
-                                                    <span class="avatar-label">CS</span>
-                                                </div>
-                                                <!-- Avatar -->
-
-                                                <!-- Content -->
-                                                <div class="flex-grow-1 overflow-hidden">
-                                                    <div class="d-flex align-items-center mb-1">
-                                                        <h5 class="text-truncate mb-0 me-auto">Chris Solomon</h5>
-                                                    </div>
-                                                    <div class="d-flex align-items-center">
-                                                        <div class="text-truncate me-auto">Last seen recently</div>
-                                                    </div>
-                                                </div>
-                                                <!-- Content -->
-
-                                                <!-- Dropdown -->
-                                                <div class="dropdown">
-                                                    <button class="btn btn-icon btn-base btn-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                        <i class="ri-more-fill"></i>
-                                                    </button>
-                                                    <ul class="dropdown-menu dropdown-menu-right">
-                                                        <li>
-                                                            <a class="dropdown-item d-flex align-items-center justify-content-between" href="#">Start chat<i class="ri-message-2-line"></i></a>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item d-flex align-items-center justify-content-between" href="#">Edit contact<i class="ri-edit-line"></i></a>
-                                                        </li>
-                                                        <li>
-                                                            <div class="dropdown-divider"></div>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item d-flex align-items-center justify-content-between" href="#">Block user<i class="ri-forbid-line"></i></a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <!-- Dropdown -->
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <!-- Chat Link -->
-                                </ul>
-                                <!--  Friends List -->
-                            </div>
-                            <!-- Contact List C -->
-
-                            <!-- Contact List D -->
-                            <div>
-                                <!-- Letter -->
-                                <h5 class="p-2 text-primary">
-                                    D
-                                </h5>
-                                <!-- Letter -->
-
-                                <!--  Friends List -->
-                                <ul class="list-unstyled">
-                                    <!-- Chat Link 1 -->
-                                    <li class="card contact-item mb-3">
-                                        <div class="card-body">
-                                            <div class="d-flex align-items-center">
-                                                <!-- Avatar -->
-                                                <div class="avatar avatar-online me-4">
-                                                    <span class="avatar-label bg-info text-white">DR</span>
-                                                </div>
-                                                <!-- Avatar -->
-
-                                                <!-- Content -->
-                                                <div class="flex-grow-1 overflow-hidden">
-                                                    <div class="d-flex align-items-center mb-1">
-                                                        <h5 class="text-truncate mb-0 me-auto">Deborah Redd
-                                                        </h5>
-                                                    </div>
-                                                    <div class="d-flex align-items-center">
-                                                        <div class="text-truncate me-auto">Online</div>
-                                                    </div>
-                                                </div>
-                                                <!-- Content -->
-
-                                                <!-- Dropdown -->
-                                                <div class="dropdown">
-                                                    <button class="btn btn-icon btn-base btn-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                        <i class="ri-more-fill"></i>
-                                                    </button>
-                                                    <ul class="dropdown-menu dropdown-menu-right">
-                                                        <li>
-                                                            <a class="dropdown-item d-flex align-items-center justify-content-between" href="#">Start chat<i class="ri-message-2-line"></i></a>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item d-flex align-items-center justify-content-between" href="#">Edit contact<i class="ri-edit-line"></i></a>
-                                                        </li>
-                                                        <li>
-                                                            <div class="dropdown-divider"></div>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item d-flex align-items-center justify-content-between" href="#">Block user<i class="ri-forbid-line"></i></a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <!-- Dropdown -->
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <!-- Chat Link 1 -->
-
-                                    <!-- Chat Link 2 -->
-                                    <li class="card contact-item">
-                                        <div class="card-body">
-                                            <div class="d-flex align-items-center">
-                                                <!-- Avatar -->
-                                                <div class="avatar me-4">
-                                                    <span class="avatar-label bg-success text-white">DG</span>
-                                                </div>
-                                                <!-- Avatar -->
-
-                                                <!-- Content -->
-                                                <div class="flex-grow-1 overflow-hidden">
-                                                    <div class="d-flex align-items-center mb-1">
-                                                        <h5 class="text-truncate mb-0 me-auto">Donald Graves
-                                                        </h5>
-                                                    </div>
-                                                    <div class="d-flex align-items-center">
-                                                        <div class="text-truncate me-auto">Last seen 4 days ago</div>
-                                                    </div>
-                                                </div>
-                                                <!-- Content -->
-
-                                                <!-- Dropdown -->
-                                                <div class="dropdown">
-                                                    <button class="btn btn-icon btn-base btn-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                        <i class="ri-more-fill"></i>
-                                                    </button>
-                                                    <ul class="dropdown-menu dropdown-menu-right">
-                                                        <li>
-                                                            <a class="dropdown-item d-flex align-items-center justify-content-between" href="#">Start chat<i class="ri-message-2-line"></i></a>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item d-flex align-items-center justify-content-between" href="#">Edit contact<i class="ri-edit-line"></i></a>
-                                                        </li>
-                                                        <li>
-                                                            <div class="dropdown-divider"></div>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item d-flex align-items-center justify-content-between" href="#">Block user<i class="ri-forbid-line"></i></a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <!-- Dropdown -->
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <!-- Chat Link 2 -->
-                                </ul>
-                                <!--  Friends List -->
-                            </div>
-                            <!-- Contact List D -->
-
-                            <!-- Contact List J -->
-                            <div>
-                                <!-- Letter -->
-                                <h5 class="p-2 text-primary">
-                                    J
-                                </h5>
-                                <!-- Letter -->
-
-                                <!--  Friends List -->
-                                <ul class="list-unstyled">
-                                    <!-- Chat Link 1 -->
-                                    <li class="card contact-item mb-3">
-                                        <div class="card-body">
-                                            <div class="d-flex align-items-center">
-                                                <!-- Avatar -->
-                                                <div class="avatar avatar-busy me-4">
-                                                    <span class="avatar-label bg-soft-info text-info">JP</span>
-                                                </div>
-                                                <!-- Avatar -->
-
-                                                <!-- Content -->
-                                                <div class="flex-grow-1 overflow-hidden">
-                                                    <div class="d-flex align-items-center mb-1">
-                                                        <h5 class="text-truncate mb-0 me-auto">Jerry Prater
-                                                        </h5>
-                                                    </div>
-                                                    <div class="d-flex align-items-center">
-                                                        <div class="text-truncate me-auto">Last seen recently</div>
-                                                    </div>
-                                                </div>
-                                                <!-- Content -->
-
-                                                <!-- Dropdown -->
-                                                <div class="dropdown">
-                                                    <button class="btn btn-icon btn-base btn-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                        <i class="ri-more-fill"></i>
-                                                    </button>
-                                                    <ul class="dropdown-menu dropdown-menu-right">
-                                                        <li>
-                                                            <a class="dropdown-item d-flex align-items-center justify-content-between" href="#">Start chat<i class="ri-message-2-line"></i></a>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item d-flex align-items-center justify-content-between" href="#">Edit contact<i class="ri-edit-line"></i></a>
-                                                        </li>
-                                                        <li>
-                                                            <div class="dropdown-divider"></div>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item d-flex align-items-center justify-content-between" href="#">Block user<i class="ri-forbid-line"></i></a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <!-- Dropdown -->
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <!-- Chat Link 1 -->
-
-                                    <!-- Chat Link 2 -->
-                                    <li class="card contact-item">
-                                        <div class="card-body">
-                                            <div class="d-flex align-items-center">
-                                                <!-- Avatar -->
-                                                <div class="avatar avatar-online me-4">
-                                                    <span class="avatar-label bg-danger text-white">JS</span>
-                                                </div>
-                                                <!-- Avatar -->
-
-                                                <!-- Content -->
-                                                <div class="flex-grow-1 overflow-hidden">
-                                                    <div class="d-flex align-items-center mb-1">
-                                                        <h5 class="text-truncate mb-0 me-auto">Joe Stoner</h5>
-                                                    </div>
-                                                    <div class="d-flex align-items-center">
-                                                        <div class="text-truncate me-auto">Online</div>
-                                                    </div>
-                                                </div>
-                                                <!-- Content -->
-
-                                                <!-- Dropdown -->
-                                                <div class="dropdown">
-                                                    <button class="btn btn-icon btn-base btn-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                        <i class="ri-more-fill"></i>
-                                                    </button>
-                                                    <ul class="dropdown-menu dropdown-menu-right">
-                                                        <li>
-                                                            <a class="dropdown-item d-flex align-items-center justify-content-between" href="#">Start chat<i class="ri-message-2-line"></i></a>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item d-flex align-items-center justify-content-between" href="#">Edit contact<i class="ri-edit-line"></i></a>
-                                                        </li>
-                                                        <li>
-                                                            <div class="dropdown-divider"></div>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item d-flex align-items-center justify-content-between" href="#">Block user<i class="ri-forbid-line"></i></a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <!-- Dropdown -->
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <!-- Chat Link 2 -->
-                                </ul>
-                                <!--  Friends List -->
-                            </div>
-                            <!-- Contact List J -->
-
-                            <!-- Contact List K -->
-                            <div>
-                                <!-- Letter -->
-                                <h5 class="p-2 text-primary">
-                                    K
-                                </h5>
-                                <!-- Letter -->
-
-                                <!--  Friends List -->
-                                <ul class="list-unstyled">
-                                    <!-- Chat Link 1 -->
-                                    <li class="card contact-item mb-3">
-                                        <div class="card-body">
-                                            <div class="d-flex align-items-center">
-                                                <!-- Avatar -->
-                                                <div class="avatar avatar-online me-4">
-                                                    <span class="avatar-label bg-soft-success text-success">KC</span>
-                                                </div>
-                                                <!-- Avatar -->
-
-                                                <!-- Content -->
-                                                <div class="flex-grow-1 overflow-hidden">
-                                                    <div class="d-flex align-items-center mb-1">
-                                                        <h5 class="text-truncate mb-0 me-auto">Katherine Cassidy
-                                                        </h5>
-                                                    </div>
-                                                    <div class="d-flex align-items-center">
-                                                        <div class="text-truncate me-auto">Online</div>
-                                                    </div>
-                                                </div>
-                                                <!-- Content -->
-
-                                                <!-- Dropdown -->
-                                                <div class="dropdown">
-                                                    <button class="btn btn-icon btn-base btn-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                        <i class="ri-more-fill"></i>
-                                                    </button>
-                                                    <ul class="dropdown-menu dropdown-menu-right">
-                                                        <li>
-                                                            <a class="dropdown-item d-flex align-items-center justify-content-between" href="#">Start chat<i class="ri-message-2-line"></i></a>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item d-flex align-items-center justify-content-between" href="#">Edit contact<i class="ri-edit-line"></i></a>
-                                                        </li>
-                                                        <li>
-                                                            <div class="dropdown-divider"></div>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item d-flex align-items-center justify-content-between" href="#">Block user<i class="ri-forbid-line"></i></a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <!-- Dropdown -->
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <!-- Chat Link 1 -->
-
-                                    <!-- Chat Link 2 -->
-                                    <li class="card contact-item">
-                                        <div class="card-body">
-                                            <div class="d-flex align-items-center">
-                                                <!-- Avatar -->
-                                                <div class="avatar me-4">
-                                                    <span class="avatar-label bg-warning text-white">KS</span>
-                                                </div>
-                                                <!-- Avatar -->
-
-                                                <!-- Content -->
-                                                <div class="flex-grow-1 overflow-hidden">
-                                                    <div class="d-flex align-items-center mb-1">
-                                                        <h5 class="text-truncate mb-0 me-auto">Kelly Smith</h5>
-                                                    </div>
-                                                    <div class="d-flex align-items-center">
-                                                        <div class="text-truncate me-auto">Last seen long time ago</div>
-                                                    </div>
-                                                </div>
-                                                <!-- Content -->
-
-                                                <!-- Dropdown -->
-                                                <div class="dropdown">
-                                                    <button class="btn btn-icon btn-base btn-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                        <i class="ri-more-fill"></i>
-                                                    </button>
-                                                    <ul class="dropdown-menu dropdown-menu-right">
-                                                        <li>
-                                                            <a class="dropdown-item d-flex align-items-center justify-content-between" href="#">Start chat<i class="ri-message-2-line"></i></a>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item d-flex align-items-center justify-content-between" href="#">Edit contact<i class="ri-edit-line"></i></a>
-                                                        </li>
-                                                        <li>
-                                                            <div class="dropdown-divider"></div>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item d-flex align-items-center justify-content-between" href="#">Block user<i class="ri-forbid-line"></i></a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <!-- Dropdown -->
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <!-- Chat Link 2 -->
-                                </ul>
-                                <!--  Friends List -->
-                            </div>
-                            <!-- Contact List K -->
-
-                            <!-- Contact List M -->
-                            <div>
-                                <!-- Letter -->
-                                <h5 class="p-2 text-primary">
-                                    M
-                                </h5>
-                                <!-- Letter -->
-
-                                <!--  Friends List -->
-                                <ul class="list-unstyled mb-1">
-                                    <!-- Chat Link -->
-                                    <li class="card contact-item">
-                                        <div class="card-body">
-                                            <div class="d-flex align-items-center">
-                                                <!-- Avatar -->
-                                                <div class="avatar me-4">
-                                                    <span class="avatar-label bg-primary text-white">MC</span>
-                                                </div>
-                                                <!-- Avatar -->
-
-                                                <!-- Content -->
-                                                <div class="flex-grow-1 overflow-hidden">
-                                                    <div class="d-flex align-items-center mb-1">
-                                                        <h5 class="text-truncate mb-0 me-auto">Maurice Coleman
-                                                        </h5>
-                                                    </div>
-                                                    <div class="d-flex align-items-center">
-                                                        <div class="text-truncate me-auto">Last seen 2 mounth ago</div>
-                                                    </div>
-                                                </div>
-                                                <!-- Content -->
-
-                                                <!-- Dropdown -->
-                                                <div class="dropdown">
-                                                    <button class="btn btn-icon btn-base btn-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                        <i class="ri-more-fill"></i>
-                                                    </button>
-                                                    <ul class="dropdown-menu dropdown-menu-right">
-                                                        <li>
-                                                            <a class="dropdown-item d-flex align-items-center justify-content-between" href="#">Start chat<i class="ri-message-2-line"></i></a>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item d-flex align-items-center justify-content-between" href="#">Edit contact<i class="ri-edit-line"></i></a>
-                                                        </li>
-                                                        <li>
-                                                            <div class="dropdown-divider"></div>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item d-flex align-items-center justify-content-between" href="#">Block user<i class="ri-forbid-line"></i></a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <!-- Dropdown -->
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <!-- Chat Link -->
-                                </ul>
-                                <!--  Friends List -->
-                            </div>
-                            <!-- Contact List M -->
-                        </div>
                     </div>
                     <!-- Tab Content -->
 
@@ -2302,13 +1827,34 @@
     </div>
 
     <!--Scripts-->
+    <link rel="stylesheet" href="/css/styles-light.min.css" />
+    <script src="/js/jquery-3.6.0.min.js"></script>
+    <script src="/js/signalr.min.js"></script>    
     <script src="/js/signalr.min.js"></script>
     <script src="/js/jquery-3.6.0.min.js"></script>
-    <script>
+<script type="text/javascript">
+        @*const cn = new signalR.HubConnectionBuilder().withUrl("/chathub").build();
+        //console.log(cn);
+
+        cn.start().then(function () {
+            var i = "@ViewBag.conv";
+            cn.invoke("JoinGroup", i).catch(function (err) {
+                return console.error(err.toString());
+            });
+        }).catch(function (err) {
+            return console.error(err.toString());
+        });
+        cn.on("SendMessage", function (user, message) {
+            console.log(user + " says " + message);
+        });*@
         
-        
-    </script>
+ 
+</script>
     <!--Scripts-->
 </body>
 </html>
-
+<script type="text/javascript">
+    $('#rlst').click(function(){
+        console.log("asdasd");
+    });
+</script>

@@ -51,6 +51,12 @@ namespace ChatBox.Models
             return connection.Execute("AddMemberIfNotExists",member, commandType: CommandType.StoredProcedure); 
         }
 
+        public IEnumerable<Member> GetMembersById(string id)
+        {
+            string sql = "SELECT Username, UserId, Fullname, Avatar FROM Member WHERE UserId <> @UserId ORDER BY Fullname ASC";
+            return connection.Query<Member>(sql, new {UserId = id});
+        }
+
 
         //Note 01: Not use this function any more from 06/04/23 because this make heavy traffic of query to database 
         /*
