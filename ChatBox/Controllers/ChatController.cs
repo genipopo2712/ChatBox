@@ -25,31 +25,42 @@ namespace ChatBox.Controllers
             this.chatHubContext = chatHubContext;
         }
         [ServiceFilter(typeof(ContactFilter))]
-        public IActionResult Index(string id)
-        {
+        public IActionResult Index()
+        {            
+            string userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var convid = messageRepository.GetGroups(userid);
+            if(convid.Count() > 0)
+            {
+                return Redirect($"/Chat/Chat?t={convid.First().ConvId}");
+            }
             return View();
         }
         [ServiceFilter(typeof(ContactFilter))]
         public IActionResult Chat(string t="")
         {
-            string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var name = conversationRepository.GetNameById(t);
-            string ids = conversationRepository.GetMembersIdInGroup(id, t);
-            DateTime lT = memberRepository.GetLastTimeActive(ids);
-            ViewBag.lastActive = (int)(DateTime.Now - lT).TotalMinutes;
-            if(string.IsNullOrEmpty(name))
+            if (t != null)
             {
-                name = conversationRepository.GetMembersInGroup(id, t).ToString();
-                //Note 01: Not use this function any more from 06/04/23 because this make heavy traffic of query to database
-                /*
-                memberRepository.SetTimeActive(name, DateTime.Now);
-                */
-            }
-            ViewBag.id = id;
-            ViewBag.conv = t;
-            ViewBag.chatname = name;
+                string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                string name = conversationRepository.GetNameById(t);
+                string ids = conversationRepository.GetMembersIdInGroup(id, t);
+                DateTime lT = memberRepository.GetLastTimeActive(ids);
+                ViewBag.lastActive = (int)(DateTime.Now - lT).TotalMinutes;
+                if(string.IsNullOrEmpty(name))
+                {
+                    name = conversationRepository.GetMembersInGroup(id, t).ToString();
+
+                    //Note 01: Not use this function any more from 06/04/23 because this make heavy traffic of query to database
+                    /*
+                    memberRepository.SetTimeActive(name, DateTime.Now);
+                    */
+                }            
+                ViewBag.id = id;
+                ViewBag.conv = t;
+                ViewBag.chatname = name;
             
-            ViewBag.messages = messageRepository.GetMessages(t);
+                ViewBag.messages = messageRepository.GetMessages(t);
+            }
+            
             return View();
         }
         [HttpPost]
@@ -60,24 +71,39 @@ namespace ChatBox.Controllers
             messageRepository.Add(obj);
             return Redirect($"/Chat/Chat?t={a}");
         }
+
+
         [ServiceFilter(typeof(ContactFilter))]
         public async Task<IActionResult> Create(string i="")
         {
             string us = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            string a = Helper.StringConv(us, i);
+            string convid = Helper.StringConv(us, i);
             List<string> group = new List<string>();
+            List<string> convname = new List<string>();
             group.Add(i);
             group.Add(us);
-            int ret = conversationRepository.Add(a, "", "");
+            int ret = conversationRepository.Add(convid, "", "");
             if (ret > 0)
             {
                 foreach (var it in group)
                 {
-                    conversationRepository.Insert(a, it);
+                    conversationRepository.Insert(convid, it);
                 }
-                await chatHubContext.Clients.Group(a).SendAsync("GroupCreate", a);
             }
-            return Redirect($"/Chat/Chat?t={a}");
+            string name = conversationRepository.GetNameById(convid);
+            if (string.IsNullOrEmpty(name))
+            {
+                foreach (var user in group)
+                {
+                    convname.Add(conversationRepository.GetMembersInGroup(user,convid).ToString());
+                }
+            }
+            else
+            {
+                convname.Add(name);
+            }
+            await chatHubContext.Clients.Groups(i).SendAsync("Creategroup", convid,convname,us);
+            return Redirect($"/Chat/Chat?t={convid}");
         }
         public IActionResult Creategroup(Group obj)
         {

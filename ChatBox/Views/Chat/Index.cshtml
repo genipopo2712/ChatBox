@@ -1,4 +1,6 @@
-﻿@{
+﻿@using System.Security.Claims;
+
+@{
 Layout = "_LayoutChat";
 }
 <head>
@@ -15,5 +17,19 @@ Layout = "_LayoutChat";
 
 @section Scripts{
     <link rel="stylesheet" href="/css/styles-light.min.css"/>
-
+    <script src="/js/signalr.min.js"></script>
+    <script>
+        const cn = new signalR.HubConnectionBuilder().withUrl("/chathub").build();
+        cn.start().then(function () {
+            var i = "@User.FindFirstValue(ClaimTypes.NameIdentifier)";
+            cn.invoke("JoinGroup", i).catch(function (err) {
+                return console.error(err.toString());
+            });
+        }).catch(function (err) {
+            return console.error(err.toString());
+        });
+        cn.on("SendMessage", function (user, message) {
+            console.log(user + " says " + message);
+        });
+    </script>
 }

@@ -6,18 +6,31 @@ using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
 using System.Security.Claims;
 using System.Globalization;
+using Microsoft.AspNetCore.Identity;
 
 namespace ChatBox
 {
     public class ChatHub : Hub
     {
+        //private static Dictionary<string, string> connectedDict = new Dictionary<string, string>();
         private static List<string> connectedClients = new List<string>();
+        private readonly UserManager<IdentityUser> userManager;
+        //public ChatHub(UserManager<IdentityUser> userManager)
+        //{
+        //    this.userManager = userManager;
+        //}
 
         public async Task JoinGroup(string groupName)
         {
             await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
             await Clients.Group(groupName).SendAsync("SendMessage", $"{Context.ConnectionId} has joined the group {groupName}.");
         }
+        //public async Task JoinGroupById(string groupName,string id)
+        //{
+        //    //string usid = connectedDict[id];
+        //    await Groups.AddToGroupAsync(usid, groupName);
+        //    await Clients.All.SendAsync("SendMessage", $"{usid} has joined the group {groupName}.");
+        //}
         public async Task LeaveGroup(string groupName)
         {
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, groupName);
@@ -29,13 +42,17 @@ namespace ChatBox
         }
         public override async Task OnConnectedAsync()
         {
+            string name = Context.User.FindFirstValue(ClaimTypes.NameIdentifier);
             connectedClients.Add(Context.ConnectionId);
+            await Groups.AddToGroupAsync(Context.ConnectionId, name);
+            await Clients.All.SendAsync("SendMessage", $"{Context.ConnectionId} has joined the group {name}, by async.");
             await base.OnConnectedAsync();
         }
 
         public override async Task OnDisconnectedAsync(Exception exception)
         {
             connectedClients.Remove(Context.ConnectionId);
+            //connectedDict.Remove(Context.ConnectionId);
             await base.OnDisconnectedAsync(exception);
         }
         IMemberRepository memberRepository;
