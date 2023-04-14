@@ -24,7 +24,7 @@ namespace ChatBox.Models
 
         public Member GetMemberById(string id)
         {
-            string sql = "SELECT Fullname, Avatar FROM Member WHERE UserId = @UserId";
+            string sql = "SELECT Fullname, Avatar, LastTimeActive FROM Member WHERE UserId = @UserId";
             return connection.QueryFirstOrDefault<Member>(sql, new {UserId = id});
         }
         public DateTime GetLastTimeActive(string id)
@@ -53,7 +53,7 @@ namespace ChatBox.Models
 
         public IEnumerable<Member> GetMembersById(string id)
         {
-            string sql = "SELECT Username, UserId, Fullname, Avatar FROM Member WHERE UserId <> @UserId ORDER BY Fullname ASC";
+            string sql = "SELECT Username, UserId, Fullname, Avatar, LastTimeActive FROM Member WHERE UserId <> @UserId ORDER BY Fullname ASC";
             return connection.Query<Member>(sql, new {UserId = id});
         }
 

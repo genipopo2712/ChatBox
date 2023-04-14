@@ -25,19 +25,21 @@ namespace ChatBox
                 string id = con.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 if (id != null)
                 {
-                    IEnumerable<Conversation> list = messageRepository.GetGroups(id);
+                    List<string> lstConv = new List<string>();
+                    IEnumerable<ConversationInfo> list = messageRepository.GetGroups(id);
                     foreach (var item in list)
                     {
                         if (string.IsNullOrEmpty(item.Convname))
                         {
                             item.Convname = conversationMemberRepository.GetMembersInGroup(id, item.ConvId);
                         }
+                        lstConv.Add(item.ConvId);
                     }
+                    
                     con.ViewData["contacts"]=list;
                     IEnumerable<Member> users = memberRepository.GetMembersById(id);
                     con.ViewData["users"] = users;
-                }
-                
+                }                
             }
         }
 

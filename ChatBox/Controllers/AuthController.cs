@@ -47,6 +47,9 @@ namespace ChatBox.Controllers
                     {
                         IsPersistent = obj.Rem
                     });
+                    DateTime act = DateTime.Now;
+                    string id = member.UserId;
+                    memberRepository.SetTimeActive(id, act);
                     return Redirect("/chat/index");
                 }
             }

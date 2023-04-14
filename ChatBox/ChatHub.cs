@@ -12,25 +12,14 @@ namespace ChatBox
 {
     public class ChatHub : Hub
     {
-        //private static Dictionary<string, string> connectedDict = new Dictionary<string, string>();
         private static List<string> connectedClients = new List<string>();
         private readonly UserManager<IdentityUser> userManager;
-        //public ChatHub(UserManager<IdentityUser> userManager)
-        //{
-        //    this.userManager = userManager;
-        //}
 
         public async Task JoinGroup(string groupName)
         {
             await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
             await Clients.Group(groupName).SendAsync("SendMessage", $"{Context.ConnectionId} has joined the group {groupName}.");
         }
-        //public async Task JoinGroupById(string groupName,string id)
-        //{
-        //    //string usid = connectedDict[id];
-        //    await Groups.AddToGroupAsync(usid, groupName);
-        //    await Clients.All.SendAsync("SendMessage", $"{usid} has joined the group {groupName}.");
-        //}
         public async Task LeaveGroup(string groupName)
         {
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, groupName);
@@ -48,11 +37,9 @@ namespace ChatBox
             await Clients.All.SendAsync("SendMessage", $"{Context.ConnectionId} has joined the group {name}, by async.");
             await base.OnConnectedAsync();
         }
-
         public override async Task OnDisconnectedAsync(Exception exception)
         {
             connectedClients.Remove(Context.ConnectionId);
-            //connectedDict.Remove(Context.ConnectionId);
             await base.OnDisconnectedAsync(exception);
         }
         IMemberRepository memberRepository;
@@ -64,29 +51,31 @@ namespace ChatBox
             this.messageRepository = messageRepository;
             this.conversationRepository = conversationRepository;
         }
-
-        public void Send(string user, string message,string convid)
-        {
-            
+       
+        public void Send(string senderId, string message,string convid)
+        {            
             Message obj = new Message
             {
-                UserId = user,
+                UserId = senderId,
                 Content = message,
                 ConvId= convid
             };
             int ret = messageRepository.Add(obj);
+            Member member = memberRepository.GetMemberById(senderId);
             if (ret > 0)
-            {
-                Member member = memberRepository.GetMemberById(user);
+            {                
                 obj.MessageDate = DateTime.Now;
                 obj.Fullname = member.Fullname;
-                obj.UserId = user;
+                obj.UserId = senderId;
                 obj.Avatar = member.Avatar;
             }
-            //obj.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            //messageRepository.Add(obj);
-            //return Redirect($"/Chat/Chat?t={a}");
-            Clients.Group(convid).SendAsync("recMsg",obj);
+            ConversationInfo con = new ConversationInfo
+            {                
+                Content = message,
+                ConvId = convid,
+                MessageDate = DateTime.ParseExact(DateTime.Now.ToString("hh:mm tt"), "hh:mm tt", CultureInfo.InvariantCulture),                
+            };
+            Clients.Group(convid).SendAsync("recMsg",obj,con, senderId);
         }
         //Note 02: Create funtion notification for user is typing
         public async Task Usertyping(string userid, string convid, string input)
@@ -106,7 +95,7 @@ namespace ChatBox
             await Clients.OthersInGroup(convid).SendAsync("typeStatus", type);
         }
         //Note 03: create a structure for the object to send to the client
-        public async Task Userstatus(string userid, string convid,string lastActive)
+        public async Task trackUserStatus(string userid, string convid,string lastActive)
         {
             UserStatus obj = new UserStatus
             {
@@ -117,25 +106,12 @@ namespace ChatBox
                 p= "success",
                 d= "online"
             };            
-            DateTimeOffset dateTimeOffset = DateTimeOffset.ParseExact(lastActive, "ddd MMM dd yyyy HH:mm:ss 'GMT'zzz '(Indochina Time)'", CultureInfo.InvariantCulture);
+            DateTimeOffset dateTimeOffset = DateTimeOffset.ParseExact(lastActive, "ddd MMM dd yyyy HH:mm:ss 'GMT'zzz '(Indochina Time)'", CultureInfo.InvariantCulture); 
             DateTime lastActivetime = dateTimeOffset.LocalDateTime;
             DateTime act = DateTime.Now;
-            //string id = conversationRepository.GetMembersIdInGroup(userid, convid);
-            //UserStatus user = memberRepository.GetTimeAwayById(id);
             var gap = act - lastActivetime;
             int a = 0;
             string b = "min";   
-            //if (valInput != null)
-            //{
-            //    if(valInput != "Type message")
-            //    {
-            //        obj.type = true;
-            //    }
-            //    else
-            //    {
-            //        obj.type = false;
-            //    }
-            //}
             if (gap != null)
             {
                 a = (int)gap.TotalMinutes;

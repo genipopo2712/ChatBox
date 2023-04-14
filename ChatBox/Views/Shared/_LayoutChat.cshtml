@@ -20,11 +20,11 @@
 <body>
     <div class="layout">
         <!-- Navigation -->
-        <div class="navigation navbar border-end h-100 py-6">
-            <!-- Logo -->            
-            <a class="logo d-none d-xl-block mb-6" href="#">
-                <img src="/img/logo.png" alt="">
-            </a>
+        <div class="navigation navbar border-end h-100 py-6">            
+            <!-- Logo -->     
+            <div class="avatar avatar-online avatar-lg">
+                    <img class="avatar-label bg-soft-info border border-primary" src="/img/@User.FindFirstValue("Avatar")" alt="">
+            </div>                     
             <!-- Logo -->
             <!-- Nav -->
             <ul class="nav nav-pills" role="tablist">
@@ -277,18 +277,18 @@
                     <!-- Tab Content -->
                     <div class="hide-scrollbar h-100">
                         <div class="m-4">
-                            @if(User.Identity.IsAuthenticated)
-                            {                                   
-                                <ul class="list-unstyled">
-                                    @foreach (var us in (IEnumerable<Member>)ViewData["users"])
+                            <ul class="list-unstyled">
+                                @if(User.Identity.IsAuthenticated)
+                                {                                
+                                    foreach (var us in (IEnumerable<Member>)ViewData["users"])
                                     {
                                         <!-- Chat Link -->
-                                            <li id="rlst" class="card contact-item">
+                                        <li id="rlst" class="card contact-item">
                                                 <a  class="contact-link"  asp-controller="chat" asp-action="create" asp-route-i="@us.UserId"></a>
                                             <div class="card-body">                                                
                                                 <div class="d-flex align-items-center">
                                                     <!-- Avatar -->
-                                                    <div class="avatar avatar-online me-4">
+                                                    <div class="avatar @(((DateTime.Now-us.LastTimeActive).Value.TotalMinutes) > 5 ? "avatar-away" : "avatar-online") me-4">
                                                         <img class="avatar-img" src="/img/@us.Avatar" alt="Image description">
                                                     </div>
                                                     <!-- Avatar -->
@@ -300,7 +300,7 @@
                                                             </h5>
                                                         </div>
                                                         <div class="d-flex align-items-center">
-                                                            <div class="text-truncate me-auto">Online</div>
+                                                                <div class="text-truncate me-auto">@(((DateTime.Now - us.LastTimeActive).Value.TotalMinutes) > 5 ? $"Away {(int)(DateTime.Now - us.LastTimeActive).Value.TotalMinutes} mins ago" : "Online")</div>
                                                         </div>
                                                     </div>
                                                     <!-- Content -->
@@ -309,10 +309,11 @@
                                                 </div>                                            
                                             </div>
                                         </li>
-                                    }
+                                         <!-- Chat Link --> 
+                                    }                                                                  
                                 }
-                                </ul>
-                            </div>
+                            </ul>
+                        </div>
                     </div>
                     <!-- Tab Content -->
                 </div>
@@ -367,31 +368,30 @@
                                 <ul id="rsContact" class="list-unstyled js-contact-list mb-0">
                                     @if (User.Identity.IsAuthenticated)
                                     {
-                                        foreach (var it in (IEnumerable<Conversation>)ViewData["contacts"])
+                                        foreach (var it in (IEnumerable<ConversationInfo>)ViewData["contacts"])
                                         {
                                                 
                                                     <!-- Chat Link 1 -->
-                                            <li class="card contact-item active mb-3">
+                                            <li id="@it.ConvId" lt="@it.LastTimeActive" class="card contact-item active mb-3">                                                
                                                 <a id="chatbox" class="contact-link" asp-controller="Chat" asp-action="Chat" asp-route-t="@it.ConvId"></a>
                                                 <div class="card-body">
                                                     <div class="d-flex align-items-center">
                                                         <!-- Avatar -->
                                                         <div class="avatar avatar-online me-4">
-                                                            <img class="avatar-img" src="/img/no-image.jpg" alt="Image description">
+                                                            <img class="avatar-img" src="/img/@it.Avatar" alt="Image description">
                                                         </div>
                                                         <!-- Avatar -->
                                                         <!-- Content -->
                                                         <div class="flex-grow-1 overflow-hidden">
                                                             <div class="d-flex align-items-center mb-1">
                                                                 <h5 class="text-truncate mb-0 me-auto">@it.Convname</h5>
-                                                                <p class="small text-muted text-nowrap ms-4 mb-0">8:12 AM</p>
+                                                                <p id="ltChat" class="small text-muted text-nowrap ms-4 mb-0">@(DateTime.Now.Date > it.MessageDate.Date ? $"{it.MessageDate.ToString("dd/MM hh:mm tt")}" : $"{it.MessageDate.ToString("hh:mm tt")}" )</p>
                                                             </div>
-                                                            <div class="d-flex align-items-center">
-                                                                <div class="line-clamp me-auto">
-                                                                    Yes, I want to participate in the
-                                                                    project.
+                                                            <div  class="d-flex align-items-center">
+                                                                <div id="cntChat" class="line-clamp me-auto">
+                                                                    @it.Content
                                                                 </div>
-                                                                <span class="badge rounded-pill bg-primary ms-2">2</span>
+                                                                <span id="countChat@(it.ConvId)" class="badge rounded-pill bg-primary ms-2">@(it.CountMessage == 0 ? "" : $"{it.CountMessage}")</span>
                                                             </div>
                                                         </div>
                                                         <!-- Content -->
@@ -1180,4 +1180,5 @@
     $(window).on('load', function () {        
         $('input[id="mlst"]').val('@User.FindFirstValue(ClaimTypes.NameIdentifier)');
     });
+
 </script>

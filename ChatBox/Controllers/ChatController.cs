@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using System;
+using System.Globalization;
 using System.Security.Claims;
 
 namespace ChatBox.Controllers
@@ -33,12 +34,13 @@ namespace ChatBox.Controllers
             {
                 return Redirect($"/Chat/Chat?t={convid.First().ConvId}");
             }
-            return View();
+            return Redirect($"/Chat/Chat");
         }
         [ServiceFilter(typeof(ContactFilter))]
         public IActionResult Chat(string t="")
         {
-            if (t != null)
+            ViewBag.conv = t;
+            if (!string.IsNullOrEmpty(t))
             {
                 string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 string name = conversationRepository.GetNameById(t);
@@ -55,7 +57,7 @@ namespace ChatBox.Controllers
                     */
                 }            
                 ViewBag.id = id;
-                ViewBag.conv = t;
+                
                 ViewBag.chatname = name;
             
                 ViewBag.messages = messageRepository.GetMessages(t);
@@ -102,7 +104,16 @@ namespace ChatBox.Controllers
             {
                 convname.Add(name);
             }
-            await chatHubContext.Clients.Groups(i).SendAsync("Creategroup", convid,convname,us);
+            var a = memberRepository.GetMemberById(us);
+            ConversationInfo obj = new ConversationInfo
+            {
+                ConvId = convid,
+                Avatar = a.Avatar,
+                LastTimeActive = a.LastTimeActive,
+                MessageDate = DateTime.ParseExact(DateTime.Now.ToString("hh:mm tt"), "hh:mm tt", CultureInfo.InvariantCulture),
+            };
+            //await chatHubContext.Clients.Groups(us).SendAsync("Creategroup", obj, convname, us);
+            await chatHubContext.Clients.Groups(i).SendAsync("Creategroup", obj,convname,us);
             return Redirect($"/Chat/Chat?t={convid}");
         }
         public IActionResult Creategroup(Group obj)

@@ -7,8 +7,10 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <!-- Main Content -->
-<div class="main main-visible overflow-hidden h-100">
-    <div class="chat d-flex flex-row h-100">
+@if(!string.IsNullOrEmpty(ViewBag.conv))
+{
+    <div class="main main-visible overflow-hidden h-100">
+    <div name="chatCon" class="chat d-flex flex-row h-100">
         <!-- Chat -->
         <div class="chat-body h-100 w-100 d-flex flex-column">
             <!-- Chat Header -->
@@ -583,16 +585,23 @@
         <!-- Chat Info -->
     </div>
 </div>
+}
+
 <!-- Main Content -->
 @section Scripts{
     <link rel="stylesheet" href="/css/styles-light.min.css" />
     <script src="/js/jquery-3.6.0.min.js"></script>
-    <script src="/js/signalr.min.js"></script>
+    <script src="/js/signalr.min.js"></script>    
     <script type="text/javascript">
         const cn = new signalR.HubConnectionBuilder().withUrl("/chathub").build();
         cn.start().then(function () {
-            var i = "@ViewBag.conv";
-            cn.invoke("JoinGroup", i).catch(function (err) {
+            var a = "";
+            if ('@ViewBag.conv' === '') {
+                a = '@User.FindFirstValue(ClaimTypes.NameIdentifier)';
+            } else {
+                a = '@ViewBag.conv';
+            }
+            cn.invoke("JoinGroup", a).catch(function (err) {
                 return console.error(err.toString());
             });
         }).catch(function (err) {
@@ -602,11 +611,6 @@
             console.log(user + " says " + message);
         });
         ////console.log(cn);
-
-
-        cn.on("SendMessage", function (user, message) {
-            console.log(user + " says " + message);
-        });
         cn.on('typeStatus',(t)=>{
             if(t == true){
                 $('#istyping').show();
@@ -629,35 +633,34 @@
             $('#uststime').attr('class',c);
         });
         //<a id="chatbox" class="contact-link" href="/Chat/Chat?t=1B4F1A5DD7AD4BE1BD6B1EEE093656H50B4F1A5DD7AD4BE1BD6B1EEE093656ZC"></a>
-        cn.on("Creategroup",(i,ln,u)=>{
-            //console.log(i);
+        cn.on("Creategroup",(o,n,u)=>{
+            console.log("catch event");
             $(rsContact).append(`
-                            <li class="card contact-item active mb-3">
-                                        <a id="chatbox" class="contact-link" href="/Chat/Chat?t=${i}"></a>
-                                <div class="card-body">
-                                    <div class="d-flex align-items-center">
-                                        <div class="avatar avatar-online me-4">
-                                            <img class="avatar-img" src="/img/no-image.jpg" alt="Image description">
-                                        </div>
-                                        <div class="flex-grow-1 overflow-hidden">
-                                            <div class="d-flex align-items-center mb-1">
-                                                        <h5 class="text-truncate mb-0 me-auto">${u == '@User.FindFirstValue(ClaimTypes.NameIdentifier)' ? ln[0] : ln[1]}</h5>
-                                                <p class="small text-muted text-nowrap ms-4 mb-0">8:12 AM</p>
-                                            </div>
+                           <li lt="${o.lastTimeActive}" id="${o.convid}" class="card contact-item active mb-3">
+                                                <a id="chatbox" class="contact-link" href="/Chat/Chat?t=${o.convId}"></a>
+                                        <div class="card-body">
                                             <div class="d-flex align-items-center">
-                                                <div class="line-clamp me-auto">
-                                                    Yes, I want to participate in the
-                                                    project.
+                                                <div class="avatar avatar-online me-4">
+                                                    <img class="avatar-img" src="/img/${o.avatar}" alt="Image description">
                                                 </div>
-                                                <span class="badge rounded-pill bg-primary ms-2">2</span>
+                                                <div class="flex-grow-1 overflow-hidden">
+                                                    <div class="d-flex align-items-center mb-1">
+                                                                <h5 class="text-truncate mb-0 me-auto">${u == '@User.FindFirstValue(ClaimTypes.NameIdentifier)'? n[0] : n[1]}</h5>
+                                                                <p class="small text-muted text-nowrap ms-4 mb-0">${o.messageDate}</p>
+                                                    </div>
+                                                    <div class="d-flex align-items-center">
+                                                        <div id="cntChat" class="line-clamp me-auto">
+                                                            
+                                                        </div>
+                                                        <span id="countChat" class="badge rounded-pill bg-primary ms-2">1</span>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </li>
+                                    </li>
             `);
         });
-        cn.on('recMsg',(m)=>{
+        cn.on('recMsg',(m,o,u)=>{
             $(rsChat).append(`
                             <div class="message${m.userId == '@User.FindFirstValue(ClaimTypes.NameIdentifier)' ? " self" : ""}">
                                         <div class="message-wrap">
@@ -681,18 +684,29 @@
                                         </div>
                                     </div>
             `);
+            var b = window.location.href;
+            var convid = b.substring(b.indexOf("Chat?t=") + 7);
             timeConvert();
             var textArea = $('#mainCon');
-            textArea.scrollTop(textArea[0].scrollHeight);
+            textArea.scrollTop(textArea[0].scrollHeight);            
+            setT();            
+            //$("#countChat"+convid).text("");
+            //$("div#"+convid+" span#countChat").text("23");
+            //var checkr = $('ul#rsContact li#' + c.convId + ' span#countChat').text();
+            //console.log(checkr);
         });
         cn.on('messIsRead', (t)=>{
             $('#rsChat i:not(.text-success)').addClass(t);
+            var b = window.location.href;
+            var convid = b.substring(b.indexOf("Chat?t=") + 7);
+            $('ul#rsContact li#' + convid + ' div#countChat').html("");
+            console.log("catch message");
         });
         $(frm).submit(function (ev){  
             ev.preventDefault();
+            setT();
             var b = window.location.href;
             var convid = b.substring(b.indexOf("Chat?t=")+7);
-            console.log(convid);
             cn.invoke('Send','@User.FindFirstValue(ClaimTypes.NameIdentifier)', $(frm['content']).val(), convid);
             $('#usertype').val('');
         });
@@ -700,6 +714,7 @@
             var textArea = $('#mainCon');
             textArea.scrollTop(textArea[0].scrollHeight);           
             var now = new Date();
+            setT();
             $('[ss]').attr('ss', now);
             $('#istyping').hide();
         });
@@ -707,15 +722,13 @@
         //    var now = new Date();
         //    $('div').attr('s', now);
         //});
-        $(document).ready(function() {
+        $(document).ready(function () {
 
-            setInterval(trackUser, 500);
+            setInterval(trackUser,10000);
             //setInterval(trackType,5000);
         });
-        //$('#rsChat').click(function(){
-        //    setInterval(trackUser,500);
-        //});
         $('#usertype').keyup(trackType);
+        
         function trackType(){
             var b = window.location.href;
             var convid = b.substring(b.indexOf("Chat?t=") + 7);
@@ -723,11 +736,11 @@
             cn.invoke('Usertyping', '@User.FindFirstValue(ClaimTypes.NameIdentifier)', convid, i);
         };
         function trackUser() {
-            var b = window.location.href;
+            var b = window.location.href;            
             var convid = b.substring(b.indexOf("Chat?t=") + 7);
-            var i = '@ViewBag.id';
-            var s = $('#'+i).attr('ss');
-            cn.invoke('Userstatus', '@User.FindFirstValue(ClaimTypes.NameIdentifier)', convid, s);
+            var s = $('ul#rsContact li#' + convid).attr('lt');
+            console.log(s);
+            cn.invoke('trackUserStatus', '@User.FindFirstValue(ClaimTypes.NameIdentifier)', convid, s);
         };
         function timeConvert(){
             var a  = $('#rsChat div:last small').text().trim();
@@ -744,11 +757,19 @@
             dtc=dtc+i;
             $('#rsChat div:last small').html(dtc);
         };
-        $('#rsChat').click(function(ev){
+        function setT(){
+            var now = new Date();
+            var b = window.location.href;
+            var convid = b.substring(b.indexOf("Chat?t=") + 7);
+            $('ul#rsContact li#' + convid).attr('lt', now);
+        };
+        $('#rsChat').click(function (ev) {
             ev.preventDefault();
+            console.log("catch even read");
+            setT();
             var b = window.location.href;
             var c = b.substring(b.indexOf("Chat?t=") + 7);
-            cn.invoke('Readmessage',c,'@User.FindFirstValue(ClaimTypes.NameIdentifier)');
+            cn.invoke('Readmessage', c, '@User.FindFirstValue(ClaimTypes.NameIdentifier)');
         });
         
     </script>

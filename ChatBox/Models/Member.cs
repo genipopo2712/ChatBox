@@ -20,6 +20,6 @@ namespace ChatBox.Models
         [Display(Name = "Fullname")]
         public string? Fullname { get; set; }
         public string? Avatar { get; set; }
-        DateTime? LastTimeActive { get; set; }
+        public DateTime? LastTimeActive { get; set; }
     }
 }

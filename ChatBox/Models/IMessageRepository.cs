@@ -2,7 +2,7 @@
 {
     public interface IMessageRepository
     {
-        IEnumerable<Conversation> GetGroups(string userid);
+        IEnumerable<ConversationInfo> GetGroups(string userid);
         IEnumerable<Message> GetMessages(string convid);
         int Add(Message obj);
         int CountUnreadMessage(string userid, string convid);
