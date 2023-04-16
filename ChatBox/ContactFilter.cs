@@ -45,6 +45,7 @@ namespace ChatBox
                         item.Content= item.Content == null ? "" : $"{item.Content}";
                         item.CountMessage = item.CountMessage == null ? 0 : item.CountMessage;
                     }
+                    con.ViewBag.usrDetail = memberRepository.GetMemberById(id).Avatar;
                     con.ViewData["GroupChat"] = listG;
                     con.ViewData["directChats"]=list;
                     IEnumerable<Member> users = memberRepository.GetMembersById(id);

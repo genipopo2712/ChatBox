@@ -24,7 +24,7 @@
         <div class="navigation navbar border-end h-100 py-6">            
             <!-- Logo -->     
             <div class="avatar avatar-online avatar-lg">
-                    <img class="avatar-label bg-soft-info border border-primary" src="/img/@User.FindFirstValue("Avatar")" alt="">
+                <img class="avatar-label bg-soft-info border border-primary" src="/img/@ViewBag.usrDetail" alt="">
             </div>                     
             <!-- Logo -->
             <!-- Nav -->
@@ -60,13 +60,7 @@
                 <!-- Settings -->
                 
                 <!-- Avatar -->
-                <li class="nav-item" role="presentation">
-                    <a class="text-decoration-none" href="#" data-bs-toggle="modal" data-bs-target="#modal-account" title="Account">
-                        <div class="avatar avatar-online avatar-sm">
-                            <span class="avatar-label bg-soft-success text-success fs-6">JD</span>
-                        </div>
-                    </a>
-                </li>
+                
                 <!-- Avatar -->
             </ul>
             <!-- Nav -->
@@ -142,8 +136,7 @@
                                                             
                                                         <span class="avatar-label bg-success text-white fs-3">                                                             
                                                                 <img id="im" class="avatar-label bg-soft-info" src="/img/no-image.jpg" alt="Image description">   
-                                                                <input asp-for="Avatar" value="" id="imgUrl" type="hidden">
-                                                                
+                                                                <input asp-for="Avatar" value="" id="imgUrl" type="hidden">                                                                
                                                         </span>
                                                     </div>
                                                 </div>
@@ -516,7 +509,7 @@
                                         <!-- Avatar -->
                                         <div class="col-auto">
                                             <div class="avatar avatar-online">
-                                                    <img id="usrim" class="avatar-label bg-soft-info" src="/img/@User.FindFirstValue("Avatar")" alt="Image description">
+                                                    <img id="usrim" class="avatar-label bg-soft-info" src="/img/@ViewBag.usrDetail">
                                                     <input asp-for="Avatar" value="" id="usrimgUrl" type="hidden">
                                                     <input type="file" id="usrf" style="display:none;" />
                                             </div>
@@ -621,6 +614,7 @@
                 
 
         </div>
+        </div>
     </div>
         
 
@@ -648,7 +642,6 @@
         </script>
         @RenderSection("Scripts",false)
     </div>
-
     <!--Scripts-->
     <link rel="stylesheet" href="/css/styles-light.min.css" />
     <script src="/js/jquery-3.6.0.min.js"></script>
@@ -676,7 +669,8 @@
     });
     $(f).change(function () {
         var fd = new FormData();
-        if (this.files[0].name.length > 15)   /* Check length of the image if >15 rename else do nothing */ {
+        if (this.files[0].name.length > 15)  
+        {
             var namefile = this.files[0].name;
             var ext = namefile.slice(namefile.lastIndexOf("."));
             const nm = Math.random().toString(36).slice(2, 10);
@@ -701,8 +695,9 @@
         usrf.click();
     });
     $(usrf).change(function () {
-        var fd = new FormData();
-        if (this.files[0].name.length > 15)   /* Check length of the image if >15 rename else do nothing */ {
+        var fd = new FormData();        
+        if (this.files[0].name.length > 15)  
+        {
             var namefile = this.files[0].name;
             var ext = namefile.slice(namefile.lastIndexOf("."));
             const nm = Math.random().toString(36).slice(2, 10);
@@ -710,7 +705,6 @@
             fd.append('f', this.files[0], namefile);
         }
         fd.append('f', f.files[0]);
-        console.log(fd);
         $.ajax({
             url: '/chat/uploadusr',
             method: 'post',

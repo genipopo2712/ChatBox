@@ -124,6 +124,7 @@ namespace ChatBox.Controllers
             await chatHubContext.Clients.Groups(i).SendAsync("Createdirect", obj,convname,us);
             return Redirect($"/Chat/Chat?t={convid}");
         }
+        [ServiceFilter(typeof(ContactFilter))]
         public async Task<IActionResult> Creategroup(Group obj)
         {
             if (ModelState.IsValid)
@@ -195,7 +196,7 @@ namespace ChatBox.Controllers
                 int ret = memberRepository.ChangeAva(u, f.FileName);
                 if (ret != 0)
                 {
-                    await chatHubContext.Clients.All.SendAsync("AvatarChanged", f.FileName,u);
+                    await chatHubContext.Clients.All.SendAsync("AvatarChanged", f.FileName, u);
                     await chatHubContext.Clients.Group(u).SendAsync("ChangedAvatar", f.FileName);
                 }
                 return Json(new { img = f.FileName });
