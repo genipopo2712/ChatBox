@@ -134,14 +134,16 @@
                                 <!-- Group Card -->
                                 <form method="post" action="/chat/creategroup">
                                     <div class="card mb-3">
-                                        <div class="card-body pt-0">
+                                        <div class="card-body pt-11">
                                             <!-- Profile -->
                                             <div class="profile text-center">
                                                 <div class="profile-content">
-                                                    <div class="avatar avatar-lg">                                                        
-                                                        <span  class="avatar-label bg-success text-white fs-3">
-                                                                <input asp-for="Avatar" value="" name="imgUrl" type="hidden"/>
-                                                                <img class="avatar-img" src="/img/no-image.jpg alt="Image description">
+                                                    <div class="avatar avatar-lg">
+                                                            
+                                                        <span class="avatar-label bg-success text-white fs-3">                                                             
+                                                                <img id="im" class="avatar-label bg-soft-info" src="/img/no-image.jpg" alt="Image description">   
+                                                                <input asp-for="Avatar" value="" id="imgUrl" type="hidden">
+                                                                
                                                         </span>
                                                     </div>
                                                 </div>
@@ -172,6 +174,7 @@
                                                 <button class="btn btn-lg btn-primary w-100">Create Chat</button>
                                             </div>                                            
                                         </div>
+                                            <input type="file" id="f" style="display:none;" />
                                     </div>
                                 </form>
                                 
@@ -281,7 +284,7 @@
                                         foreach (var us in (IEnumerable<Member>)ViewData["users"])
                                         {
                                             <!-- Chat Link -->
-                                            <li id="rlst" class="card contact-item">
+                                            <li id="rlst@(us.UserId)" class="card contact-item">
                                                     <a  class="contact-link"  asp-controller="chat" asp-action="create" asp-route-i="@us.UserId"></a>
                                                 <div class="card-body">                                                
                                                     <div class="d-flex align-items-center">
@@ -450,7 +453,7 @@
                                                             </div>
                                                         </div>
                                             <div class="card-footer d-flex align-items-center justify-content-between overflow-hidden">
-                                                @*<h5 class="mb-0 text-truncate">@it.Convname</h5>*@
+                                              
                                                 <p class="mb-0 small text-muted text-nowrap">@it.CountMember Members</p>
                                             </div>
                                                 </li>
@@ -513,7 +516,9 @@
                                         <!-- Avatar -->
                                         <div class="col-auto">
                                             <div class="avatar avatar-online">
-                                                <span class="avatar-label bg-soft-success text-success">JD</span>
+                                                    <img id="usrim" class="avatar-label bg-soft-info" src="/img/@User.FindFirstValue("Avatar")" alt="Image description">
+                                                    <input asp-for="Avatar" value="" id="usrimgUrl" type="hidden">
+                                                    <input type="file" id="usrf" style="display:none;" />
                                             </div>
                                         </div>
                                         <!-- Avatar -->
@@ -537,65 +542,8 @@
                                 </div>
                                 <!-- Title -->
 
-                                <!-- Accordion -->
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="accordion accordion-flush" id="accordion-account-settings">
-                                            <div class="accordion-item">
-                                                <div class="accordion-header" id="account-heading-1">
-                                                    <div class="accordion-button collapsed p-0 pb-4" role="button" data-bs-toggle="collapse" data-bs-target="#account-collapse-1" aria-expanded="false" aria-controls="account-collapse-1">
-                                                        <div>
-                                                            <h5 class="mb-1">Account settings</h5>
-                                                            <p class="text-muted mb-0">Update account settings</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div id="account-collapse-1" class="accordion-collapse collapse" aria-labelledby="account-heading-1">
-                                                    <div class="accordion-body p-0 pb-4">
-                                                        <!-- Name Input -->
-                                                        <div class="mb-4">
-                                                            <div class="input-group">
-                                                                <input type="text" class="form-control form-control-lg form-control-solid" placeholder="Name" aria-label="Name">
-                                                            </div>
-                                                        </div>
-                                                        <!-- Name Input -->
-
-                                                        <!-- Email Input -->
-                                                        <div class="mb-4">
-                                                            <div class="input-group">
-                                                                <input type="text" class="form-control form-control-lg form-control-solid" placeholder="Email" aria-label="Email">
-                                                            </div>
-                                                        </div>
-                                                        <!-- Email Input -->
-
-                                                        <!-- Phone Input -->
-                                                        <div class="mb-4">
-                                                            <div class="input-group">
-                                                                <input type="text" class="form-control form-control-lg form-control-solid" placeholder="Phone" aria-label="Phone">
-                                                            </div>
-                                                        </div>
-                                                        <!-- Phone Input -->
-
-                                                        <!-- About Input -->
-                                                        <div class="mb-4">
-                                                            <div class="input-group">
-                                                                <textarea class="form-control form-control-lg form-control-solid" placeholder="About text" rows="3"></textarea>
-                                                            </div>
-                                                        </div>
-                                                        <!-- About Input -->
-
-                                                        <!-- Button -->
-                                                        <button class="btn btn-lg btn-primary w-100">Save</button>
-                                                        <!-- Button -->
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Accordion -->
-                            </div>
+                               
+                       
                             <!-- Account -->
 
                             <!-- Security -->
@@ -723,7 +671,58 @@
         $('input[id="mlst"]').val(str);
         console.log(str);
     });
-    
+    $(im).click(function () {
+            f.click();
+    });
+    $(f).change(function () {
+        var fd = new FormData();
+        if (this.files[0].name.length > 15)   /* Check length of the image if >15 rename else do nothing */ {
+            var namefile = this.files[0].name;
+            var ext = namefile.slice(namefile.lastIndexOf("."));
+            const nm = Math.random().toString(36).slice(2, 10);
+            namefile = nm + ext;
+            fd.append('f', this.files[0], namefile);
+        }
+        fd.append('f', f.files[0]);
+        console.log(fd);
+        $.ajax({
+            url: '/chat/upload',
+            method: 'post',
+            contentType: false,
+            processData: false,
+            data: fd,
+            success: function (o) {
+                $(im).attr('src', '/img/'+o.img);
+                $('input[id="imgUrl"]').val(o.img);
+            }
+        });
+    });
+    $(usrim).click(function () {
+        usrf.click();
+    });
+    $(usrf).change(function () {
+        var fd = new FormData();
+        if (this.files[0].name.length > 15)   /* Check length of the image if >15 rename else do nothing */ {
+            var namefile = this.files[0].name;
+            var ext = namefile.slice(namefile.lastIndexOf("."));
+            const nm = Math.random().toString(36).slice(2, 10);
+            namefile = nm + ext;
+            fd.append('f', this.files[0], namefile);
+        }
+        fd.append('f', f.files[0]);
+        console.log(fd);
+        $.ajax({
+            url: '/chat/uploadusr',
+            method: 'post',
+            contentType: false,
+            processData: false,
+            data: fd,
+            success: function (o) {
+                $(usrim).attr('src', '/img/' + o.img);
+                $('input[id="usrimgUrl"]').val(o.img);
+            }
+        });
+    });
     $(window).on('load', function () {        
         $('input[id="mlst"]').val('@User.FindFirstValue(ClaimTypes.NameIdentifier)');
     });

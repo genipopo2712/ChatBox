@@ -62,6 +62,11 @@ namespace ChatBox.Models
             return connection.Execute("ChangePassword", new { UserId = userid, Password = Helper.Hash(oldpwd), NewPassword = Helper.Hash(newpwd) }, commandType: CommandType.StoredProcedure);
         }
 
+        public int ChangeAva(string userid, string ava)
+        {
+            return connection.Execute("ChangeAvatar", new { UserId = userid, Avatar = ava }, commandType: CommandType.StoredProcedure);
+        }
+
 
         //Note 01: Not use this function any more from 06/04/23 because this make heavy traffic of query to database 
         /*

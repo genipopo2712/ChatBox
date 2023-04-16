@@ -678,7 +678,7 @@
         });
         //<a id="chatbox" class="contact-link" href="/Chat/Chat?t=1B4F1A5DD7AD4BE1BD6B1EEE093656H50B4F1A5DD7AD4BE1BD6B1EEE093656ZC"></a>
         cn.on("Createdirect", (o, n, u) => {
-            console.log("catch event");
+            console.log("Createdirect");
             $(rsContact).append(`
                            <li lt="${o.lastTimeActive}" id="${o.convid}" class="card contact-item active mb-3">
                                                 <a id="chatbox" class="contact-link" href="/Chat/Chat?t=${o.convId}"></a>
@@ -740,6 +740,12 @@
             //$("div#"+convid+" span#countChat").text("23");
             //var checkr = $('ul#rsContact li#' + c.convId + ' span#countChat').text();
             //console.log(checkr);
+        });
+        cn.on('AvatarChanged',(i,u)=>{
+            $('li#rlst' +u+ ' img').attr('src','/img/'+i);
+        });
+        cn.on('ChangedAvatar', (i)=>{
+            $('img:first').attr('src','/img/'+i);
         });
         cn.on('recMsgRead', (o) => {
             console.log("Reader");
@@ -861,8 +867,7 @@
             var b = window.location.href;
             var c = b.substring(b.indexOf("Chat?t=") + 7);
             cn.invoke('Readmessage', c, '@User.FindFirstValue(ClaimTypes.NameIdentifier)');
-        });
-        
+        });       
         
     </script>
 }

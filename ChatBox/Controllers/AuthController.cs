@@ -90,7 +90,7 @@ namespace ChatBox.Controllers
                         int ret = memberRepository.Add(obj);
                         if (ret != 0)
                         {
-                            return Redirect("auth/signin");
+                            return Redirect("/auth/signin");
                         }
                         return View(obj);
                     }                    

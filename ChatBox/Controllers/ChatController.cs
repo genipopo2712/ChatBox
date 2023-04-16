@@ -160,5 +160,47 @@ namespace ChatBox.Controllers
             return Redirect("/Chat/Index");
             
         }
+        [HttpPost]
+        public IActionResult Upload(IFormFile f)
+        {
+            if (f != null)
+            {
+                string root = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "img");
+                if (!Directory.Exists(root))
+                {
+                    Directory.CreateDirectory(root);
+                }
+                using (Stream stream = new FileStream(Path.Combine(root, f.FileName), FileMode.Create))
+                {
+                    f.CopyTo(stream);
+                }
+                return Json(new { img = f.FileName });
+            }
+            return Json(null);
+        }
+        public async Task<IActionResult> Uploadusr(IFormFile f)
+        {
+            if (f != null)
+            {
+                string root = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "img");
+                if (!Directory.Exists(root))
+                {
+                    Directory.CreateDirectory(root);
+                }
+                using (Stream stream = new FileStream(Path.Combine(root, f.FileName), FileMode.Create))
+                {
+                    f.CopyTo(stream);
+                }
+                string u = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                int ret = memberRepository.ChangeAva(u, f.FileName);
+                if (ret != 0)
+                {
+                    await chatHubContext.Clients.All.SendAsync("AvatarChanged", f.FileName,u);
+                    await chatHubContext.Clients.Group(u).SendAsync("ChangedAvatar", f.FileName);
+                }
+                return Json(new { img = f.FileName });
+            }
+            return Json(null);
+        }
     }
 }
