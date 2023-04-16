@@ -20,10 +20,15 @@ namespace ChatBox.Models
             return connection.QueryFirstOrDefault<int>("CountMessage", new {UserId = userid, Convid = convid},commandType:CommandType.StoredProcedure);
         }
 
-        public IEnumerable<ConversationInfo> GetGroups(string userid)
+        public IEnumerable<ConversationInfo> GetDirects(string userid)
         {
-            return connection.Query<ConversationInfo>("GetBoxMessage", new { UserId = userid}, commandType: CommandType.StoredProcedure);
+            return connection.Query<ConversationInfo>("GetBoxMessageDirect", new { UserId = userid}, commandType: CommandType.StoredProcedure);
 
+        }
+
+        public IEnumerable<GroupInfo> GetGroups(string userid)
+        {
+            return connection.Query<GroupInfo>("GetBoxMessageGroup", new { UserId = userid }, commandType: CommandType.StoredProcedure);
         }
 
         public IEnumerable<Message> GetMessages(string convid)

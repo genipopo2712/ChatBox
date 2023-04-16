@@ -3,9 +3,11 @@
     public interface IConversationRepository
     {
         string GetMembersInGroup(string userid, string convid);
-        string GetMembersIdInGroup(string userid, string convid);
+        IEnumerable<string> GetMembersIdInGroup(string userid, string convid);
         string GetNameById(string id);
-        int Add(string id, string name, string descrip);
+        int Add(Conversation obj);
         int Insert(string conv, string id);
+        int CountNewMessage(string userid, string convid);
+
     }
 }

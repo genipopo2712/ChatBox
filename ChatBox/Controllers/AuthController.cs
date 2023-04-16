@@ -53,7 +53,7 @@ namespace ChatBox.Controllers
                     return Redirect("/chat/index");
                 }
             }
-            return View(obj);
+            return View();
         }
         public async Task<IActionResult> Signout()
         {
@@ -70,8 +70,9 @@ namespace ChatBox.Controllers
         [HttpPost]
         public IActionResult Signup(Member obj)
         {
-            obj.UserId = Helper.RandomString(32).ToString().ToUpper();
+            obj.UserId = Helper.UserString().ToString().ToUpper();
             obj.Avatar = "no-image.jpg";
+            obj.LastTimeActive= DateTime.Now;
             if (ModelState.IsValid)
             {
                 if (obj != null)
@@ -87,7 +88,12 @@ namespace ChatBox.Controllers
                     else
                     {
                         int ret = memberRepository.Add(obj);
-                    }
+                        if (ret != 0)
+                        {
+                            return Redirect("auth/signin");
+                        }
+                        return View(obj);
+                    }                    
                 }
             }
             return View(obj);

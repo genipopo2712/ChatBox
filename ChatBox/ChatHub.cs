@@ -52,14 +52,16 @@ namespace ChatBox
             this.conversationRepository = conversationRepository;
         }
        
-        public void Send(string senderId, string message,string convid)
-        {            
+        public async Task Send(string senderId, string message,string convid)
+        {
+            IEnumerable<string> readerIds = conversationRepository.GetMembersIdInGroup(senderId, convid);
             Message obj = new Message
             {
                 UserId = senderId,
                 Content = message,
                 ConvId= convid
             };
+
             int ret = messageRepository.Add(obj);
             Member member = memberRepository.GetMemberById(senderId);
             if (ret > 0)
@@ -70,12 +72,18 @@ namespace ChatBox
                 obj.Avatar = member.Avatar;
             }
             ConversationInfo con = new ConversationInfo
-            {                
+            {
+                Convname= readerIds.First(),
+                CountMessage = conversationRepository.CountNewMessage(readerIds.First(), convid),
                 Content = message,
-                ConvId = convid,
-                MessageDate = DateTime.ParseExact(DateTime.Now.ToString("hh:mm tt"), "hh:mm tt", CultureInfo.InvariantCulture),                
+                ConvId = convid             
             };
-            Clients.Group(convid).SendAsync("recMsg",obj,con, senderId);
+            foreach (var item in readerIds)
+            {
+                await Clients.Group(item).SendAsync("recMsgRead",con);
+            }
+            await Clients.Group(senderId).SendAsync("recMsgSend", con);
+            await Clients.Group(convid).SendAsync("recMsg",obj);
         }
         //Note 02: Create funtion notification for user is typing
         public async Task Usertyping(string userid, string convid, string input)

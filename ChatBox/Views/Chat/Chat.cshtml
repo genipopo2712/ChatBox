@@ -6,6 +6,7 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 </head>
+
 <!-- Main Content -->
 @if(!string.IsNullOrEmpty(ViewBag.conv))
 {
@@ -129,7 +130,7 @@
 
             <!-- Chat Content -->
             <div id="mainCon" class="chat-content hide-scrollbar h-100">
-                <!-- Messages -->
+                <!-- Messages -->                
                 <div class="container-fluid g-0 p-4">                   
                     <!-- Separator -->
                     <div class="separator">
@@ -231,10 +232,8 @@
                     <div class="row align-items-center g-4">
                         <!-- Input -->                        
                             <div class="col">
-                                <div class="input-group">                                    
-                                    <button class="btn btn-white btn-lg border" type="button"><i class="ri-attachment-2"></i></button>
+                                <div class="input-group">                               
                                     <input id="usertype" type="text" name="content" class="form-control form-control-lg" placeholder="Type message" aria-label="type message"/>
-                                    <button class="btn btn-white btn-lg border" type="button"><i class="ri-chat-smile-2-line"></i></button>
                                 </div>
                             </div>
                             <!-- Input -->
@@ -248,7 +247,6 @@
                                     </li>
                                 </ul>
                             </div>                       
-                        
                         <!-- Button -->
                     </div>
                     </form>
@@ -586,7 +584,19 @@
     </div>
 </div>
 }
-
+<div class="position-fixed top-0 end-0 p-3" style="z-index: 11">
+  <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="10000" >
+    <div class="toast-header">
+      <img src="..." class="rounded me-2" alt="...">
+      <strong class="me-auto">Bootstrap</strong>
+      <small>5 secs ago</small>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body">
+          <div>Password have been changed successfully!</div>
+    </div>
+  </div>
+</div>
 <!-- Main Content -->
 @section Scripts{
     <link rel="stylesheet" href="/css/styles-light.min.css" />
@@ -632,8 +642,42 @@
             document.getElementById("uststime").innerHTML = b ;
             $('#uststime').attr('class',c);
         });
+        cn.on("Creategroup",(o)=>{
+            console.log("created group chat");
+            $(rsGroup).append(`
+                    <li class="card contact-item mb-3">
+                                <a id="chatbox" class="contact-link" href="/Chat/Chat?t=${o.convId}"></a>
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                            <!-- Avatar -->
+                                <div class="avatar avatar-online me-4">
+                                    <img class="avatar-img" src="/img/${o.avatar}" alt="Image description">
+                                </div>
+                            <!-- Avatar -->
+                            <!-- Content -->
+                            <div class="flex-grow-1 overflow-hidden">
+                                <div class="d-flex align-items-center mb-1">
+                                    <h5 class="text-truncate mb-0 me-auto">${o.convname}</h5>
+                                    <p id="ltChat${o.convId}" class="small text-muted text-nowrap ms-4 mb-0"></p>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <div id="cntChat${o.convId}" class="line-clamp me-auto">
+                                     
+                                    </div>
+                                            <span id="countChat${o.convId}" class="badge rounded-pill bg-primary ms-2"></span>
+                                </div>
+                            </div>
+                            <!-- Content -->
+                            </div>
+                        </div>
+                        <div class="card-footer d-flex align-items-center justify-content-between overflow-hidden">
+                                <p class="mb-0 small text-muted text-nowrap">${o.countMember} Members</p>
+                        </div>
+                    </li>
+            `);
+        });
         //<a id="chatbox" class="contact-link" href="/Chat/Chat?t=1B4F1A5DD7AD4BE1BD6B1EEE093656H50B4F1A5DD7AD4BE1BD6B1EEE093656ZC"></a>
-        cn.on("Creategroup",(o,n,u)=>{
+        cn.on("Createdirect", (o, n, u) => {
             console.log("catch event");
             $(rsContact).append(`
                            <li lt="${o.lastTimeActive}" id="${o.convid}" class="card contact-item active mb-3">
@@ -660,7 +704,7 @@
                                     </li>
             `);
         });
-        cn.on('recMsg',(m,o,u)=>{
+        cn.on('recMsg',(m)=>{
             $(rsChat).append(`
                             <div class="message${m.userId == '@User.FindFirstValue(ClaimTypes.NameIdentifier)' ? " self" : ""}">
                                         <div class="message-wrap">
@@ -684,6 +728,8 @@
                                         </div>
                                     </div>
             `);
+            //console.log(u);
+            
             var b = window.location.href;
             var convid = b.substring(b.indexOf("Chat?t=") + 7);
             timeConvert();
@@ -695,11 +741,31 @@
             //var checkr = $('ul#rsContact li#' + c.convId + ' span#countChat').text();
             //console.log(checkr);
         });
+        cn.on('recMsgRead', (o) => {
+            console.log("Reader");
+            console.log(o);
+            $("#cntChat" + o.convId).text(o.content);
+            var dt = new Date();
+            var td = dt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
+            $("#ltChat" + o.convId).text(td);
+            $("#countChat" + o.convId).text(o.countMessage);
+            console.log(count);
+        });
+        cn.on('recMsgSend', (o) => {
+            console.log("Sender");
+            console.log(o.messageDate);
+            $("#countChat" + o.convId).text("");
+            $("#cntChat" + o.convId).text(o.content);
+            var dt = new Date();
+            var td = dt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
+            $("#ltChat" + o.convId).text(td);
+        });
         cn.on('messIsRead', (t)=>{
             $('#rsChat i:not(.text-success)').addClass(t);
             var b = window.location.href;
             var convid = b.substring(b.indexOf("Chat?t=") + 7);
             $('ul#rsContact li#' + convid + ' div#countChat').html("");
+            $("#countChat" + convid).text("");
             console.log("catch message");
         });
         $(frm).submit(function (ev){  
@@ -714,6 +780,7 @@
             var textArea = $('#mainCon');
             textArea.scrollTop(textArea[0].scrollHeight);           
             var now = new Date();
+            $('li[id=@ViewBag.conv]').addClass('active');
             setT();
             $('[ss]').attr('ss', now);
             $('#istyping').hide();
@@ -728,7 +795,31 @@
             //setInterval(trackType,5000);
         });
         $('#usertype').keyup(trackType);
-        
+        $('button[name=changepwd]').click(function () {
+            var op = $(cpwd).val();
+            var np = $(npwd).val();
+            var rp = $(rpwd).val();
+            var m = "";
+            var toastm = document.querySelector('#liveToast .toast-body div');
+            if (np == rp) {
+                $(warnotice).hide();
+                console.log('asdas');
+                $.post('/home/changepassword', { 'o': op, 'n': np }, (d) => {
+                    console.log(d);
+                    if (d !== null) {
+                        console.log('changed');
+                        $('.toast').toast('show');
+                        toastm.innerHTML = 'Password have been changed successfully!';
+                    }
+                    else{
+                        toastm.innerHTML = 'Please enter password correctly!';
+                    }
+                });
+            } else {
+                toastm.innerHTML = 'Please confirm password correctly!';
+            }
+
+        });
         function trackType(){
             var b = window.location.href;
             var convid = b.substring(b.indexOf("Chat?t=") + 7);
@@ -771,6 +862,7 @@
             var c = b.substring(b.indexOf("Chat?t=") + 7);
             cn.invoke('Readmessage', c, '@User.FindFirstValue(ClaimTypes.NameIdentifier)');
         });
+        
         
     </script>
 }

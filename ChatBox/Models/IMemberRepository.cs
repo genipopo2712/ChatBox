@@ -9,6 +9,7 @@
         string CheckUserNameById(string name);
         int Add(Member member);
         IEnumerable<Member> GetMembersById(string id);  
+        int ChangePwd(string userid, string oldpwd, string newpwd);
 
         //Note 01: Not use this function any more from 06/04/23 because this make heavy traffic of query to database 
         /*

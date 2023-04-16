@@ -21,6 +21,12 @@ namespace Chatbox
             }
             return string.Join("", arr);
         }
+        public static string UserString()
+        {
+            string i = RandomString(30).ToUpper();
+            string groupid = $"0B{i}";
+            return groupid;
+        }
         public static string StringConv(string id1, string id2)
         {
             string r = "1B";

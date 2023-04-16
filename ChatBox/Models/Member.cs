@@ -8,16 +8,16 @@ namespace ChatBox.Models
     {
         public string? UserId { get; set; }
         [Required(ErrorMessage = " Please enter your {0}")]
-        [Display(Name = "User name")]
+        [Display(Name = "user name")]
         public string Username { get; set; }
         [Required(ErrorMessage = " Please enter your {0}")]
-        [Display(Name = "Password")]
+        [Display(Name = "password")]
         public string? Password { get; set; }
         [Required(ErrorMessage = " Please enter your {0}")]
-        [Display(Name = "Email")]
+        [Display(Name = "email")]
         public string Email { get; set; }
         [Required(ErrorMessage = " Please enter your {0}")]
-        [Display(Name = "Fullname")]
+        [Display(Name = "fullname")]
         public string? Fullname { get; set; }
         public string? Avatar { get; set; }
         public DateTime? LastTimeActive { get; set; }

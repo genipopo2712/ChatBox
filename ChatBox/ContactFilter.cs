@@ -26,7 +26,8 @@ namespace ChatBox
                 if (id != null)
                 {
                     List<string> lstConv = new List<string>();
-                    IEnumerable<ConversationInfo> list = messageRepository.GetGroups(id);
+                    IEnumerable<ConversationInfo> list = messageRepository.GetDirects(id);
+                    IEnumerable<GroupInfo> listG = messageRepository.GetGroups(id);
                     foreach (var item in list)
                     {
                         if (string.IsNullOrEmpty(item.Convname))
@@ -35,8 +36,17 @@ namespace ChatBox
                         }
                         lstConv.Add(item.ConvId);
                     }
-                    
-                    con.ViewData["contacts"]=list;
+                    foreach (var item in listG)
+                    {
+                        if (string.IsNullOrEmpty(item.Avatar))
+                        {
+                            item.Avatar = "no-image.jpg";
+                        }
+                        item.Content= item.Content == null ? "" : $"{item.Content}";
+                        item.CountMessage = item.CountMessage == null ? 0 : item.CountMessage;
+                    }
+                    con.ViewData["GroupChat"] = listG;
+                    con.ViewData["directChats"]=list;
                     IEnumerable<Member> users = memberRepository.GetMembersById(id);
                     con.ViewData["users"] = users;
                 }                

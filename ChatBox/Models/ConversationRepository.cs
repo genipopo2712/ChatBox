@@ -9,14 +9,19 @@ namespace ChatBox.Models
         {
         }
 
-        public int Add(string id, string name, string descrip)
+        public int Add(Conversation obj)
         {
-            return connection.Execute("CreateGroup", new { ConvId = id, Convname = name, ConvDescrip = descrip },commandType: CommandType.StoredProcedure);
+            return connection.Execute("CreateGroup", new { ConvId = obj.ConvId, Convname = obj.Convname, ConvDescrip = obj.ConvDescrip, Avatar = obj.Avatar },commandType: CommandType.StoredProcedure);
         }
 
-        public string GetMembersIdInGroup(string userid, string convid)
+        public int CountNewMessage(string userid, string convid)
         {
-            return connection.QueryFirstOrDefault<string>("GetUserIdinGroup", new { UserId = userid, ConvId = convid }, commandType: CommandType.StoredProcedure);
+            return connection.QueryFirstOrDefault<int>("CountNewMessage", new { UserId = userid, ConvId = convid},commandType: CommandType.StoredProcedure);
+        }
+
+        public IEnumerable<string> GetMembersIdInGroup(string userid, string convid)
+        {
+            return connection.Query<string>("GetUserIdinGroup", new { UserId = userid, ConvId = convid }, commandType: CommandType.StoredProcedure);
         }
 
         public string GetMembersInGroup(string userid, string convid)
