@@ -42,22 +42,29 @@ namespace ChatBox.Controllers
         {
             ViewBag.conv = t;
             if (!string.IsNullOrEmpty(t))
-            {
-                string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            {   
+                string userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 string name = conversationRepository.GetNameById(t);
-                IEnumerable<string> ids = conversationRepository.GetMembersIdInGroup(id, t);
+                IEnumerable<string> ids = conversationRepository.GetMembersIdInGroup(userid, t);                
+                ViewBag.clientIds = string.Join(";",ids);
+                ViewBag.avatar = "no-image.jpg";
+                if (ids.Count() ==1)
+                {
+                    ViewBag.clId = ids.First();
+                    ViewBag.avatar = memberRepository.GetMemberById(ids.First()).Avatar;
+                }
                 DateTime lT = memberRepository.GetLastTimeActive(ids.First());
                 ViewBag.lastActive = (int)(DateTime.Now - lT).TotalMinutes;
                 if(string.IsNullOrEmpty(name))
                 {
-                    name = conversationRepository.GetMembersInGroup(id, t).ToString();
+                    name = conversationRepository.GetMembersInGroup(userid, t).ToString();
 
                     //Note 01: Not use this function any more from 06/04/23 because this make heavy traffic of query to database
                     /*
                     memberRepository.SetTimeActive(name, DateTime.Now);
                     */
                 }            
-                ViewBag.id = id;
+                ViewBag.id = userid;
                 
                 ViewBag.chatname = name;
             

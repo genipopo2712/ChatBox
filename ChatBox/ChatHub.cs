@@ -113,8 +113,9 @@ namespace ChatBox
                 nt = "Available",
                 p= "success",
                 d= "online"
-            };            
-            DateTimeOffset dateTimeOffset = DateTimeOffset.ParseExact(lastActive, "ddd MMM dd yyyy HH:mm:ss 'GMT'zzz '(Indochina Time)'", CultureInfo.InvariantCulture); 
+            };
+            //DateTimeOffset dateTimeOffset = DateTimeOffset.ParseExact(lastActive, "ddd MMM dd yyyy HH:mm:ss 'GMT'zzz '(Indochina Time)'", CultureInfo.InvariantCulture); 
+            DateTimeOffset dateTimeOffset = DateTimeOffset.Parse(lastActive);
             DateTime lastActivetime = dateTimeOffset.LocalDateTime;
             DateTime act = DateTime.Now;
             var gap = act - lastActivetime;
@@ -181,10 +182,15 @@ namespace ChatBox
             }
             await Clients.Group(convid).SendAsync("messIsRead", i);
         }
-        //public async Task Creategroup(string id, string userid)
-        //{
-
-        //    int ret = conversationRepository.Add(id);
-        //}
+        public async Task UserAction(string userid)
+        {
+            DateTime t = DateTime.Now;
+            int ret = memberRepository.SetTimeActive(userid, t);
+            if (ret > 0)
+            {
+                await Clients.AllExcept(userid).SendAsync("SetNewTime", t, userid);
+            }
+            
+        }
     }
 }

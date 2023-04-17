@@ -11,6 +11,7 @@
         IEnumerable<Member> GetMembersById(string id);  
         int ChangePwd(string userid, string oldpwd, string newpwd);
         int ChangeAva(string userid, string ava);
+        int ChangeLastTimeActive(string userid, DateTime t);
 
         //Note 01: Not use this function any more from 06/04/23 because this make heavy traffic of query to database 
         /*

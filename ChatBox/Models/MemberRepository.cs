@@ -67,6 +67,11 @@ namespace ChatBox.Models
             return connection.Execute("ChangeAvatar", new { UserId = userid, Avatar = ava }, commandType: CommandType.StoredProcedure);
         }
 
+        public int ChangeLastTimeActive(string userid, DateTime t)
+        {
+            return connection.Execute("ChangeTime", new { UserId = userid, LastTimeActive = t }, commandType: CommandType.StoredProcedure);
+        }
+
 
         //Note 01: Not use this function any more from 06/04/23 because this make heavy traffic of query to database 
         /*

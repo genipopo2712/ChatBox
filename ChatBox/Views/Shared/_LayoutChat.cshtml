@@ -277,12 +277,12 @@
                                         foreach (var us in (IEnumerable<Member>)ViewData["users"])
                                         {
                                             <!-- Chat Link -->
-                                            <li id="rlst@(us.UserId)" class="card contact-item">
+                                            <li id="rlst@(us.UserId)" class="card contact-item" lt="@us.LastTimeActive">
                                                     <a  class="contact-link"  asp-controller="chat" asp-action="create" asp-route-i="@us.UserId"></a>
                                                 <div class="card-body">                                                
                                                     <div class="d-flex align-items-center">
                                                         <!-- Avatar -->
-                                                        <div class="avatar @(((DateTime.Now-us.LastTimeActive).Value.TotalMinutes) > 5 ? "avatar-away" : "avatar-online") me-4">
+                                                        <div id="usrImg" class="avatar @(((DateTime.Now-us.LastTimeActive).Value.TotalMinutes) > 5 ? "avatar-away" : "avatar-online") me-4">
                                                             <img class="avatar-img" src="/img/@us.Avatar" alt="Image description">
                                                         </div>
                                                         <!-- Avatar -->
@@ -294,7 +294,7 @@
                                                                 </h5>
                                                             </div>
                                                             <div class="d-flex align-items-center">
-                                                                    <div class="text-truncate me-auto">@(((DateTime.Now - us.LastTimeActive).Value.TotalMinutes) > 5 ? $"Away {(int)(DateTime.Now - us.LastTimeActive).Value.TotalMinutes} mins ago" : "Online")</div>
+                                                                    <div id="usrNoti" class="text-truncate me-auto">@(((DateTime.Now - us.LastTimeActive).Value.TotalMinutes) > 5 ? $"Away {(int)(DateTime.Now - us.LastTimeActive).Value.TotalMinutes} mins ago" : "Online")</div>
                                                             </div>
                                                         </div>
                                                         <!-- Content -->

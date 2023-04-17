@@ -50,6 +50,12 @@ namespace ChatBox
                     con.ViewData["directChats"]=list;
                     IEnumerable<Member> users = memberRepository.GetMembersById(id);
                     con.ViewData["users"] = users;
+                    List<string> lstUsr = new List<string>();
+                    foreach (var it in users)
+                    {
+                        lstUsr.Add(it.UserId.ToString());
+                    }
+                    con.ViewBag.allMem = string.Join(";",lstUsr);
                 }                
             }
         }

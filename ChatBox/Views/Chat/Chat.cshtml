@@ -8,8 +8,9 @@
 </head>
 
 <!-- Main Content -->
-
-<div class="main main-visible overflow-hidden h-100">
+@if (!string.IsNullOrEmpty(ViewBag.conv))
+{
+    <div class="main main-visible overflow-hidden h-100">
 <div name="chatCon" class="chat d-flex flex-row h-100">
     <!-- Chat -->
     <div class="chat-body h-100 w-100 d-flex flex-column">
@@ -18,7 +19,7 @@
             <div class="container-fluid">
                 <div class="row align-items-center g-0">
                     <div class="col-8 col-sm-5">
-                        <div class="d-flex align-items-center">
+                        <div id="topBar" class="d-flex align-items-center">
                             <!-- Close Chat Button -->
                             <div class="d-block d-xl-none me-3">
                                 <button class="chat-hide btn btn-icon btn-base btn-sm" type="button">
@@ -29,8 +30,8 @@
 
                             <!-- Avatar -->
                                 
-                            <div ss="" class="avatar avatar-away avatar-sm me-3" id="@ViewBag.id">
-                                <span class="avatar-label bg-soft-primary text-primary fs-6">AM</span>
+                            <div ss="" class="avatar avatar-away avatar-sl me-3" id="@ViewBag.clId">
+                                    <img class="avatar-img" src="/img/@ViewBag.avatar" alt="Image description">
                             </div>
                                 
                                 
@@ -596,6 +597,8 @@
     </div>
   </div>
 </div>
+}
+
 <!-- Main Content -->
 @section Scripts{
     <link rel="stylesheet" href="/css/styles-light.min.css" />
@@ -604,7 +607,7 @@
     <script type="text/javascript">
         const cn = new signalR.HubConnectionBuilder().withUrl("/chathub").build();
         cn.start().then(function () {
-            var a = "";
+            var a = "";            
             if ('@ViewBag.conv' === '') {
                 a = '@User.FindFirstValue(ClaimTypes.NameIdentifier)';
             } else {
@@ -613,6 +616,7 @@
             cn.invoke("JoinGroup", a).catch(function (err) {
                 return console.error(err.toString());
             });
+            iamActive();
         }).catch(function (err) {
             return console.error(err.toString());
         });
@@ -727,18 +731,12 @@
                                         </div>
                                     </div>
             `);
-            //console.log(u);
-            
             var b = window.location.href;
             var convid = b.substring(b.indexOf("Chat?t=") + 7);
             timeConvert();
             var textArea = $('#mainCon');
             textArea.scrollTop(textArea[0].scrollHeight);            
-            setT();            
-            //$("#countChat"+convid).text("");
-            //$("div#"+convid+" span#countChat").text("23");
-            //var checkr = $('ul#rsContact li#' + c.convId + ' span#countChat').text();
-            //console.log(checkr);
+            //setT();            
         });
         cn.on('AvatarChanged',(i,u)=>{
             $('li#rlst' +u+ ' img').attr('src','/img/'+i);
@@ -774,9 +772,13 @@
             $("#countChat" + convid).text("");
             console.log("catch message");
         });
+        cn.on('SetNewTime',(t,u)=>{
+            $('li#rlst'+u).attr('lt',t);
+        });
         $(frm).submit(function (ev){  
             ev.preventDefault();
-            setT();
+            iamActive();
+            //setT();
             var b = window.location.href;
             var convid = b.substring(b.indexOf("Chat?t=")+7);
             cn.invoke('Send','@User.FindFirstValue(ClaimTypes.NameIdentifier)', $(frm['content']).val(), convid);
@@ -787,18 +789,18 @@
             textArea.scrollTop(textArea[0].scrollHeight);           
             var now = new Date();
             $('li[id=@ViewBag.conv]').addClass('active');
-            setT();
+            //setT();
             $('[ss]').attr('ss', now);
             $('#istyping').hide();
         });
-        //$(this).keydown(()=>{
-        //    var now = new Date();
-        //    $('div').attr('s', now);
-        //});
         $(document).ready(function () {
-
-            setInterval(trackUser,10000);
-            //setInterval(trackType,5000);
+            var a = '@ViewBag.allMem';
+            var ar = a.split(";");
+            console.log(a);
+            setInterval(function () {
+                statusClient(ar);
+            }, 500);
+            setInterval(trackUser,500);
         });
         $('#usertype').keyup(trackType);
         $('button[name=changepwd]').click(function () {
@@ -854,16 +856,51 @@
             dtc=dtc+i;
             $('#rsChat div:last small').html(dtc);
         };
-        function setT(){
+        function minConverter(i){
+            var m = parseInt(i) - 1;
+            if (m < 60) {
+                return m + " minute" + (m === 1 ? "" : "s");
+            } else if (m < 1440) {
+                return Math.floor(m / 60) + " hour" + (Math.floor(m / 60) === 1 ? "" : "s");
+            } else if (m < 43200) {
+                return Math.floor(m / 1440) + " day" + (Math.floor(m / 1440) === 1 ? "" : "s");
+            } else {
+                return Math.floor(m / 43200) + " month" + (Math.floor(m / 43200) === 1 ? "" : "s");
+            }          
+        };
+        function iamActive(){
+            var u= '@User.FindFirstValue(ClaimTypes.NameIdentifier)';
+            cn.invoke('UserAction',u);
+        };
+        function statusClient(ar) {
+            for (var i = 0; i < ar.length; i++) {
+                var u = ar[i];
+                var lta = $('li#rlst' + u).attr('lt');
+                var now = new Date();
+                var ld = new Date(lta);
+                var diffMin = parseInt((now - ld) / 60000);
+                if (diffMin > 1) {
+                    var r = minConverter(diffMin);
+                    $('li#rlst' + u + ' #usrImg').attr('class', 'avatar avatar-away me-4');
+                    $('li#rlst' + u + ' #usrNoti').html(r);
+                } else {
+                    $('li#rlst' + u + ' #usrImg').attr('class', 'avatar avatar-online me-4');
+                    $('li#rlst' + u + ' #usrNoti').html('Online');
+                }
+            }
+        };
+
+        //not use this solution inffective
+        @*function setT(){
             var now = new Date();
             var b = window.location.href;
             var convid = b.substring(b.indexOf("Chat?t=") + 7);
             $('ul#rsContact li#' + convid).attr('lt', now);
-        };
+        };*@
         $('#rsChat').click(function (ev) {
             ev.preventDefault();
             console.log("catch even read");
-            setT();
+            iamActive();
             var b = window.location.href;
             var c = b.substring(b.indexOf("Chat?t=") + 7);
             cn.invoke('Readmessage', c, '@User.FindFirstValue(ClaimTypes.NameIdentifier)');
