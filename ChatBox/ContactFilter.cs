@@ -25,6 +25,7 @@ namespace ChatBox
                 string id = con.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 if (id != null)
                 {
+                    List<string> lstUsr2 = new List<string>();
                     List<string> lstConv = new List<string>();
                     IEnumerable<ConversationInfo> list = messageRepository.GetDirects(id);
                     IEnumerable<GroupInfo> listG = messageRepository.GetGroups(id);
@@ -34,6 +35,7 @@ namespace ChatBox
                         {
                             item.Convname = conversationMemberRepository.GetMembersInGroup(id, item.ConvId);
                         }
+                        lstUsr2.Add(item.UserId);
                         lstConv.Add(item.ConvId);
                     }
                     foreach (var item in listG)
@@ -56,6 +58,7 @@ namespace ChatBox
                         lstUsr.Add(it.UserId.ToString());
                     }
                     con.ViewBag.allMem = string.Join(";",lstUsr);
+                    con.ViewBag.allMem2 = string.Join(";",lstUsr2);
                 }                
             }
         }

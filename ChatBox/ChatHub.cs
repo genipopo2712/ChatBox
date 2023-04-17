@@ -103,6 +103,8 @@ namespace ChatBox
             await Clients.OthersInGroup(convid).SendAsync("typeStatus", type);
         }
         //Note 03: create a structure for the object to send to the client
+        //Note 04: not use this function, use other way to get status of each user
+        /*
         public async Task trackUserStatus(string userid, string convid,string lastActive)
         {
             UserStatus obj = new UserStatus
@@ -172,6 +174,7 @@ namespace ChatBox
 
             //Clients.All.SendAsync("setStatus",status,time,color);
         }
+        */
         public async Task Readmessage(string convid, string userid)
         {
             string i = "";

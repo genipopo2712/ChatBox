@@ -9,5 +9,6 @@
         public int CountMessage { get; set; }
         public string Content { get; set; }
         public DateTime? LastTimeActive { get; set; }
+        public string UserId { get; set; }
     }
 }

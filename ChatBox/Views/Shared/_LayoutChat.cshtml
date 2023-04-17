@@ -23,7 +23,7 @@
         <!-- Navigation -->
         <div class="navigation navbar border-end h-100 py-6">            
             <!-- Logo -->     
-            <div class="avatar avatar-online avatar-lg">
+            <div class="avatar avatar-lg">
                 <img class="avatar-label bg-soft-info border border-primary" src="/img/@ViewBag.usrDetail" alt="">
             </div>                     
             <!-- Logo -->
@@ -239,7 +239,7 @@
             <!-- Create Chat Tab -->
 
             <!-- Friends Tab -->
-            <div class="tab-pane fade h-100" id="friends-tab" role="tabpanel">
+            <div name="friendstab" class="tab-pane fade h-100" id="friends-tab" role="tabpanel">
                 <div class="d-flex flex-column h-100">
                     <!-- Tab Header -->
                     <div class="tab-header d-flex align-items-center border-bottom">
@@ -282,7 +282,7 @@
                                                 <div class="card-body">                                                
                                                     <div class="d-flex align-items-center">
                                                         <!-- Avatar -->
-                                                        <div id="usrImg" class="avatar @(((DateTime.Now-us.LastTimeActive).Value.TotalMinutes) > 5 ? "avatar-away" : "avatar-online") me-4">
+                                                        <div id="usrImg" class="avatar avatar-away me-4">
                                                             <img class="avatar-img" src="/img/@us.Avatar" alt="Image description">
                                                         </div>
                                                         <!-- Avatar -->
@@ -294,7 +294,7 @@
                                                                 </h5>
                                                             </div>
                                                             <div class="d-flex align-items-center">
-                                                                    <div id="usrNoti" class="text-truncate me-auto">@(((DateTime.Now - us.LastTimeActive).Value.TotalMinutes) > 5 ? $"Away {(int)(DateTime.Now - us.LastTimeActive).Value.TotalMinutes} mins ago" : "Online")</div>
+                                                                    <div id="usrNoti" class="text-truncate me-auto"></div>
                                                             </div>
                                                         </div>
                                                         <!-- Content -->
@@ -376,12 +376,12 @@
                                             foreach (var it in (IEnumerable<ConversationInfo>)ViewData["directChats"])
                                             {                                                
                                                         <!-- Chat Link 1 -->
-                                                <li id="@it.ConvId" lt="@it.LastTimeActive" class="card contact-item mb-3">                                                
+                                                <li name="gchild@(it.UserId)" id="@it.ConvId" lt="@it.LastTimeActive" class="card contact-item mb-3">                                                
                                                     <a id="chatbox" class="contact-link" asp-controller="Chat" asp-action="Chat" asp-route-t="@it.ConvId"></a>
                                                     <div class="card-body">
                                                         <div class="d-flex align-items-center">
                                                             <!-- Avatar -->
-                                                            <div class="avatar avatar-online me-4">
+                                                            <div id="gc@(it.UserId)" class="avatar avatar-online me-4">
                                                                 <img class="avatar-img" src="/img/@it.Avatar" alt="Image description">
                                                             </div>
                                                             <!-- Avatar -->
@@ -420,7 +420,7 @@
                                         {
                                             foreach (var it in (IEnumerable<GroupInfo>)ViewData["GroupChat"])
                                             {
-                                                <li class="card contact-item mb-3">
+                                                <li id="gr@(it.ConvId)" class="card contact-item mb-3">
                                                         <a id="chatbox" class="contact-link" asp-controller="Chat" asp-action="Chat" asp-route-t="@it.ConvId"></a>
                                                         <div class="card-body">
                                                             <div class="d-flex align-items-center">

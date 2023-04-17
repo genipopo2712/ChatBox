@@ -29,18 +29,25 @@
                             <!-- Close Chat Button -->
 
                             <!-- Avatar -->
-                                
-                            <div ss="" class="avatar avatar-away avatar-sl me-3" id="@ViewBag.clId">
-                                    <img class="avatar-img" src="/img/@ViewBag.avatar" alt="Image description">
-                            </div>
-                                
+                                    @if (!string.IsNullOrEmpty(ViewBag.clId))
+                                    {
+                                        <div class="avatar avatar-away avatar-sl me-3" id="child@(ViewBag.clId)">
+                                            <img class="avatar-img" src="/img/@ViewBag.avatar" alt="Image description">
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="avatar avatar-online avatar-sl me-3" >
+                                            <img class="avatar-img" src="/img/@ViewBag.avatar" alt="Image description">
+                                        </div>
+                                    }                               
                                 
                             <!-- Avatar -->
 
                             <!-- Text -->
                             <div class="flex-grow-1 overflow-hidden">
                                 <h6 class="d-block text-truncate mb-1">@ViewBag.chatname</h6>
-                                <p id="uststime" class="d-block text-truncate text-gray-600 fs-6 mb-0">Active @ViewBag.lastActive mins ago</p>
+                                <p id="uststime" class="d-block text-truncate text-gray-600 fs-6 mb-0">Active</p>
                             </div>
                             <!-- Text -->
                         </div>
@@ -616,7 +623,6 @@
             cn.invoke("JoinGroup", a).catch(function (err) {
                 return console.error(err.toString());
             });
-            iamActive();
         }).catch(function (err) {
             return console.error(err.toString());
         });
@@ -637,14 +643,14 @@
             var convid = b.substring(b.indexOf("Chat?t=") + 7);
             cn.invoke("JoinGroup",i);
             });
-        cn.on('setStatus',(o)=>{
-            var a = `avatar avatar-${o.d} avatar-sm me-3`;
-            $('[ss]').attr('class',a);
-            var b = `${o.nt}`;
-            var c = `"d-block text-truncate text-${o.p} fs-6 mb-0"`;
-            document.getElementById("uststime").innerHTML = b ;
-            $('#uststime').attr('class',c);
-        });
+        //cn.on('setStatus',(o)=>{
+        //    var a = `avatar avatar-${o.d} avatar-sm me-3`;
+        //    $('[ss]').attr('class',a);
+        //    var b = `${o.nt}`;
+        //    var c = `"d-block text-truncate text-${o.p} fs-6 mb-0"`;
+        //    document.getElementById("uststime").innerHTML = b ;
+        //    $('#uststime').attr('class',c);
+        //});
         cn.on("Creategroup",(o)=>{
             console.log("created group chat");
             $(rsGroup).append(`
@@ -774,7 +780,7 @@
         });
         cn.on('SetNewTime',(t,u)=>{
             $('li#rlst'+u).attr('lt',t);
-        });
+        });        
         $(frm).submit(function (ev){  
             ev.preventDefault();
             iamActive();
@@ -790,6 +796,8 @@
             var now = new Date();
             $('li[id=@ViewBag.conv]').addClass('active');
             //setT();
+            getStatus();
+            getGchildStatus();
             $('[ss]').attr('ss', now);
             $('#istyping').hide();
         });
@@ -800,7 +808,11 @@
             setInterval(function () {
                 statusClient(ar);
             }, 500);
-            setInterval(trackUser,500);
+            setInterval(getStatus,500);
+            setInterval(getGchildStatus, 500);
+        });
+        $('div[name=friendtab').change(function(){
+            console.log('min changed');
         });
         $('#usertype').keyup(trackType);
         $('button[name=changepwd]').click(function () {
@@ -834,13 +846,13 @@
             var i = $('#usertype').val();
             cn.invoke('Usertyping', '@User.FindFirstValue(ClaimTypes.NameIdentifier)', convid, i);
         };
-        function trackUser() {
-            var b = window.location.href;            
-            var convid = b.substring(b.indexOf("Chat?t=") + 7);
-            var s = $('ul#rsContact li#' + convid).attr('lt');
-            console.log(s);
-            cn.invoke('trackUserStatus', '@User.FindFirstValue(ClaimTypes.NameIdentifier)', convid, s);
-        };
+        //function trackUser() {
+        //    var b = window.location.href;            
+        //    var convid = b.substring(b.indexOf("Chat?t=") + 7);
+        //    var s = $('ul#rsContact li#' + convid).attr('lt');
+        //    console.log(s);
+        //    cn.invoke('trackUserStatus', '@User.FindFirstValue(ClaimTypes.NameIdentifier)', convid, s);
+        //};
         function timeConvert(){
             var a  = $('#rsChat div:last small').text().trim();
             var dt = new Date(Date.parse(a));
@@ -872,6 +884,14 @@
             var u= '@User.FindFirstValue(ClaimTypes.NameIdentifier)';
             cn.invoke('UserAction',u);
         };
+        function getStatus(){   
+            var id = '@ViewBag.clId';
+            var childImg = $('li#rlst' + id + ' #usrImg').attr('class');
+            $('#child'+id).attr('class',childImg+' avatar-sl');
+            var childT = $('li#rlst' + id + ' #usrNoti').html();
+            $('#topBar #uststime').html(childT);
+        };
+
         function statusClient(ar) {
             for (var i = 0; i < ar.length; i++) {
                 var u = ar[i];
@@ -882,14 +902,24 @@
                 if (diffMin > 1) {
                     var r = minConverter(diffMin);
                     $('li#rlst' + u + ' #usrImg').attr('class', 'avatar avatar-away me-4');
-                    $('li#rlst' + u + ' #usrNoti').html(r);
+                    $('li#rlst' + u + ' #usrNoti').html('Active '+r+' ago');
                 } else {
                     $('li#rlst' + u + ' #usrImg').attr('class', 'avatar avatar-online me-4');
                     $('li#rlst' + u + ' #usrNoti').html('Online');
                 }
             }
         };
-
+        function getGchildStatus(){
+            console.log('Get Gchild')
+            var all = '@ViewBag.allMem2';
+            var arr = all.split(";");
+            for (var i = 0; i < arr.length; i++) {
+                var id = arr[i];
+                var gchildImg = $('li#rlst' + id + ' #usrImg').attr('class');
+                var u = `li[name=gchild]`;
+                $("li[name=gchild" +id+ "] div#gc"+id).attr('class', gchildImg + ' avatar-sl');
+            }
+        };
         //not use this solution inffective
         @*function setT(){
             var now = new Date();

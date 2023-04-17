@@ -31,9 +31,10 @@ namespace ChatBox.Controllers
         {            
             string userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var convid = messageRepository.GetDirects(userid);
-            if(convid.Count() > 0)
-            {
-                return Redirect($"/Chat/Chat?t={convid.First().ConvId}");
+            DateTime t = DateTime.Now;
+            if (convid.Count() > 0)
+            {                
+                return Redirect($"/Chat/Chat?t={convid.First().ConvId}");                
             }
             return Redirect($"/Chat/Chat");
         }
@@ -42,7 +43,8 @@ namespace ChatBox.Controllers
         {
             ViewBag.conv = t;
             if (!string.IsNullOrEmpty(t))
-            {   
+            {
+                ViewBag.clId = "";
                 string userid = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 string name = conversationRepository.GetNameById(t);
                 IEnumerable<string> ids = conversationRepository.GetMembersIdInGroup(userid, t);                
