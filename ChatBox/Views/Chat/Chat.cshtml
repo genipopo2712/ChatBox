@@ -55,59 +55,19 @@
                     <div class="col-4 col-sm-7">
                         <ul class="list-inline text-end mb-0">
                             <!-- Search Button -->
-                            <li class="list-inline-item d-none d-sm-inline-block">
-                                <button class="btn btn-icon btn-base" type="button" title="Search" data-bs-toggle="collapse" data-bs-target="#search-chat" aria-expanded="false">
-                                    <i class="ri-search-line"></i>
-                                </button>
-                            </li>
+                            
                             <!-- Search Button -->
 
                             <!-- Chat Info Button -->
-                            <li class="list-inline-item d-none d-sm-inline-block">
-                                <button class="chat-info-toggle btn btn-icon btn-base" title="Chat info" type="button">
+                            <li class="list-inline-item d-none d-sm-inline-block">                                
+                                <button id="chatinfo" class="chat-info-toggle btn btn-icon btn-base" type="button" title="Chat info"  data-bs-toggle="modal" data-bs-target="#exampleModal">
                                     <i class="ri-user-3-line"></i>
                                 </button>
                             </li>
                             <!-- Chat Info Button -->
 
                             <!-- Dropdown -->
-                            <li class="list-inline-item">
-                                <div class="dropdown">
-                                    <button class="btn btn-icon btn-base" type="button" title="Menu" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="ri-more-fill"></i>
-                                    </button>
-                                    <ul class="dropdown-menu dropdown-menu-end">
-                                        <li class="d-block d-sm-none">
-                                            <a class="dropdown-item d-flex align-items-center justify-content-between" href="#" data-bs-toggle="collapse" data-bs-target="#search-chat" aria-expanded="false">Search
-                                                <i class="ri-search-line"></i>
-                                            </a>
-                                        </li>
-                                        <li class="d-block d-sm-none">
-                                            <a class="chat-info-toggle dropdown-item d-flex align-items-center justify-content-between" href="#">Chat Info
-                                                <i class="ri-information-line"></i>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item d-flex align-items-center justify-content-between" href="#">Archive
-                                                <i class="ri-archive-line"></i>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item d-flex align-items-center justify-content-between" href="#">Mute
-                                                <i class="ri-volume-mute-line"></i>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <div class="dropdown-divider"></div>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item d-flex align-items-center justify-content-between" href="#">Block
-                                                <i class="ri-forbid-line"></i>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
+                           
                             <!-- Dropdown -->
                         </ul>
                     </div>
@@ -606,6 +566,44 @@
 </div>
 }
 
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Member in group</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <ul class="list-group list-group-flush">
+                    <!-- User 1 -->
+                    <li  class="list-group-item py-4">
+                        <div class="row align-items-center gx-4">
+                            <!-- Avatar -->
+                            <div class="col-auto">
+                                <div class="avatar avatar-sm avatar-online">
+                                    <span class="avatar-label bg-soft-success text-success fs-6">JD</span>
+                                </div>
+                            </div>
+                            <!-- Avatar -->
+                            <!-- Text -->
+                            <div class="col overflow-hidden">
+                                <h6 class="text-truncate mb-1">John Davis</h6>
+                                <p class="text-success mb-0 fs-6">Online</p>
+                            </div>
+                            <!-- Text -->                            
+                        </div>
+                    </li>
+                    <!-- User 1 -->
+                    
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>                
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Main Content -->
 @section Scripts{
     <link rel="stylesheet" href="/css/styles-light.min.css" />
@@ -798,6 +796,7 @@
             //setT();
             getStatus();
             getGchildStatus();
+            getStatusMem();
             $('[ss]').attr('ss', now);
             $('#istyping').hide();
         });
@@ -810,6 +809,7 @@
             }, 500);
             setInterval(getStatus,500);
             setInterval(getGchildStatus, 500);
+            setInterval(getStatusMem, 500);
         });
         $('div[name=friendtab').change(function(){
             console.log('min changed');
@@ -920,6 +920,17 @@
                 $("li[name=gchild" +id+ "] div#gc"+id).attr('class', gchildImg + ' avatar-sl');
             }
         };
+        function getStatusMem(){
+            var a = '@ViewBag.allMem';
+            var mem = a.split(";");
+            for (var i = 0; i < mem.length; i++) {
+                var id = mem[i];
+            var childImg = $('li#rlst' + id + ' #usrImg').attr('class');
+            $('li#mem' + id + ' #usrImg').attr('class',childImg);            
+            var childT = $('li#rlst' + id + ' #usrNoti').html();
+                $('li#mem' + id + ' #usrNoti').html(childT);    
+            }
+        };
         //not use this solution inffective
         @*function setT(){
             var now = new Date();
@@ -927,6 +938,9 @@
             var convid = b.substring(b.indexOf("Chat?t=") + 7);
             $('ul#rsContact li#' + convid).attr('lt', now);
         };*@
+        $(chatinfo).click(function(){
+            myModal.show();
+        });
         $('#rsChat').click(function (ev) {
             ev.preventDefault();
             console.log("catch even read");
